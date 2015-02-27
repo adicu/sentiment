@@ -1,2 +1,5 @@
 # sentiment
-Kimberly Tao
+
+### List of Developers
+- Kimberly Tao
+- Sophie Stadler
