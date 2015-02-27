@@ -4,3 +4,4 @@
 - Kimberly Tao
 - Sophie Stadler
 - Jackie Luo
+- Kevin Shen
