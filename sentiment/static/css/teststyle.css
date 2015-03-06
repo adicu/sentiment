@@ -10,10 +10,6 @@ html, body {
 }
 header {
   background: #50E582;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
   color: white;
   padding: 10rem 0;
   text-align: center;
@@ -22,14 +18,59 @@ h1 {
   font-size: 5rem;
   font-weight: 900;
 }
+a {
+  border-bottom: 2px solid #ccc;
+  color: #ccc;
+  text-decoration: none;
+}
+a:hover {
+  
+}
+.article-link {
+  color: black;
+}
 .container {
+  clear: both;
+  display: block;
   margin: 0 auto;
-  padding: 4rem 0;
-  width: 75%;
+  width: 60%;
+}
+.filter-row {
+  padding-top: 2rem;
+}
+.filter {
+  border: 2px solid white;
+  border-radius: 0.5rem;
+  color: white;
+  display: inline-block;
+  margin: 0 2rem;
+  padding: 1rem 2rem;
+}
+.filter:hover {
+  background-color: white;
+  color: black;
 }
 
-/* Responsive Columns */
+/* Footer */
+.footer {
+  background-color: #3e4953;
+  clear: both;
+  color: white;
+  overflow: auto;
+  padding: 4rem 0;
+  width: 100%;
+}
+.left {
+  display: block;
+  float: left;
+}
+.right {
+  display: block;
+  float: right;
+}
 
+
+/* Responsive Columns */
 .grid {
   margin-left: -3%;
   max-width: 105%;
@@ -40,6 +81,7 @@ h1 {
   *display: inline;
   *zoom: 1;
   vertical-align: top;
+  padding: 2rem 0;
   margin-left: 3%;
   margin-right: -.25em;
   /* Clearfix */
