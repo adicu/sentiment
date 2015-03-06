@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import datetime, requests
+import datetime, requests, csv, re
 
 # Gets today's date.
 d = datetime.date.today()
@@ -20,14 +20,27 @@ for day in range(7):
         url = link.get("href")
         if url != "":
             urls.append(url)
-            print("URL:", url)
+            # print("URL:", url)
 
     d -= datetime.timedelta(days = 1)
 
+# Gets all words and values from sentiments.csv
+sentiments_file = open("sentiments.csv")
+dialect = csv.Sniffer().sniff(sentiments_file.read(1024))
+sentiments_file.seek(0)
+reader = csv.reader(sentiments_file, dialect)
+
+dictionary = {}
+for line in reader:
+    dictionary.update({line[0] : line[1]})
+
+total_sentiment = 0
+words_count = 0
+
 # Get all comments, likes, and dislikes for each article.
 for a in urls:
-    r2 = requests.get(a)
-    data2 = r2.text
+    r = requests.get(a)
+    data2 = r.text
     soup2 = BeautifulSoup(data2)
     all_comments = soup2.findAll(class_ = "reg-comment-body")
     all_likes = soup2.findAll(class_ = "like-count")
@@ -36,6 +49,19 @@ for a in urls:
         comment = c.get_text()
         like = l.get_text()
         dislike = d.get_text()
-        print(comment)
-        print("Likes: " + like)
-        print("Dislikes: " + dislike)
+
+        comment_words = re.findall(r"\w+", comment)
+        # print(comment_words)
+
+        # Determines if a word is a sentiment word.
+        for word in comment_words:
+            if word in dictionary:
+                total_sentiment += float(dictionary[word])
+                words_count += 1
+                # print(word)
+        # print(comment)
+        # print("Likes: " + like)
+        # print("Dislikes: " + dislike)
+
+# Gives the average positivity/negativity for all comments.
+print(total_sentiment / words_count)
