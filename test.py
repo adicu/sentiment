@@ -5,8 +5,10 @@ import datetime, requests, csv, re
 d = datetime.date.today()
 urls = []
 
+NUM_DAYS = 7
+
 # Loops through last seven days on Bwog.
-for day in range(7):
+for day in range(NUM_DAYS):
     url_date = str(d).replace('-', '/')
     r = requests.get("http://bwog.com/" + url_date)
     data = r.text
@@ -24,7 +26,7 @@ for day in range(7):
 
     d -= datetime.timedelta(days = 1)
 
-# Gets all words and values from sentiments.csv
+# Turns sentiments file into dictionary
 sentiments_file = open("sentiments.csv")
 dialect = csv.Sniffer().sniff(sentiments_file.read(1024))
 sentiments_file.seek(0)
@@ -34,6 +36,7 @@ dictionary = {}
 for line in reader:
     dictionary.update({line[0] : line[1]})
 
+# Total and number of words added to the sentiment value
 total_sentiment = 0
 words_count = 0
 
@@ -42,13 +45,19 @@ for a in urls:
     r = requests.get(a)
     data2 = r.text
     soup2 = BeautifulSoup(data2)
+
     all_comments = soup2.findAll(class_ = "reg-comment-body")
     all_likes = soup2.findAll(class_ = "like-count")
     all_dislikes = soup2.findAll(class_ = "dislike-count")
+
     for c, l, d in zip(all_comments, all_likes, all_dislikes):
         comment = c.get_text()
         like = l.get_text()
         dislike = d.get_text()
+
+        # print(comment)
+        # print("Likes: " + like)
+        # print("Dislikes: " + dislike)
 
         comment_words = re.findall(r"\w+", comment)
         # print(comment_words)
@@ -59,9 +68,7 @@ for a in urls:
                 total_sentiment += float(dictionary[word])
                 words_count += 1
                 # print(word)
-        # print(comment)
-        # print("Likes: " + like)
-        # print("Dislikes: " + dislike)
 
-# Gives the average positivity/negativity for all comments.
-print(total_sentiment / words_count)
+# Gives the average sentiment value for all comments.
+if words_count != 0 and total_sentiment != 0:
+    print(total_sentiment / words_count)
