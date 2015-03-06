@@ -26,8 +26,8 @@ for day in range(7):
 
 # Get all comments, likes, and dislikes for each article.
 for a in urls:
-    r2 = requests.get(a)
-    data2 = r2.text
+    r = requests.get(a)
+    data2 = r.text
     soup2 = BeautifulSoup(data2)
     all_comments = soup2.findAll(class_ = "reg-comment-body")
     all_likes = soup2.findAll(class_ = "like-count")
