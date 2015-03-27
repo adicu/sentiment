@@ -24,7 +24,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  
+  border-bottom-color: #3e4953;
 }
 .article-link {
   color: black;
@@ -35,6 +35,8 @@ a:hover {
   margin: 0 auto;
   width: 60%;
 }
+
+/* properties for weekly, monthly, etc. buttons */
 .filter-row {
   padding-top: 2rem;
 }
@@ -68,6 +70,9 @@ a:hover {
   display: block;
   float: right;
 }
+footer a:hover {
+  border-bottom-color: white;
+}
 
 
 /* Responsive Columns */
@@ -89,24 +94,27 @@ a:hover {
   *overflow: visible;
 }
 
-.span-grid {
-  width: 97%;
-}
+/* span page */
+.span-grid { width: 97%; }
 
+/* two columns */
 .one-of-two { width: 47%; }
 
+/* three columns */
 .one-of-three { width: 30.36%; }
 .two-of-three { width: 63.666666666%; }
 
+/* four columns */
 .one-of-four { width: 22.05%; }
 .three-of-four { width: 72%; }
 
+/* five columns */
 .one-of-five { width: 17.07%; }
 .two-of-five { width: 37%; }
 .three-of-five { width: 57%; }
 .four-of-five { width: 77%; }
 
-
+/* media queries */
 @media screen and (max-width: 650px) {
  .grid {
    margin-left: 0;
