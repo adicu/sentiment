@@ -9,7 +9,7 @@ html, body {
   box-sizing: border-box;
 }
 header {
-  background: #50E582;
+  background: #FF6459;
   color: white;
   padding: 10rem 0;
   text-align: center;
@@ -18,13 +18,16 @@ h1 {
   font-size: 5rem;
   font-weight: 900;
 }
+h4 {
+  font-style: italic;
+}
 a {
   border-bottom: 2px solid #ccc;
   color: #ccc;
   text-decoration: none;
 }
 a:hover {
-  
+  border-bottom-color: #3e4953;
 }
 .article-link {
   color: black;
@@ -35,10 +38,15 @@ a:hover {
   margin: 0 auto;
   width: 60%;
 }
-.filter-row {
-  padding-top: 2rem;
+
+/* nav bar, unfixed */
+.nav {
+  padding: 2rem 0;
 }
-.filter {
+nav a {
+  border-bottom: none;
+}
+.filter-button {
   border: 2px solid white;
   border-radius: 0.5rem;
   color: white;
@@ -46,9 +54,35 @@ a:hover {
   margin: 0 2rem;
   padding: 1rem 2rem;
 }
-.filter:hover {
+.filter-button:hover {
   background-color: white;
   color: black;
+}
+
+/* nav bar, fixed */
+.fixed {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 1rem 0;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+.fixed .filter-button {
+  border-color: black;
+  color: black;
+  margin: 0 0.75rem;
+  padding: 0.5rem 1rem;
+}
+.fixed .filter-button:hover {
+  background-color: black;
+  color: white;
+}
+
+.time-span {
+  border-bottom: 1px solid #E0E0E0;
+  padding: 2rem 0;
 }
 
 /* Footer */
@@ -68,6 +102,9 @@ a:hover {
   display: block;
   float: right;
 }
+footer a:hover {
+  border-bottom-color: white;
+}
 
 
 /* Responsive Columns */
@@ -81,7 +118,6 @@ a:hover {
   *display: inline;
   *zoom: 1;
   vertical-align: top;
-  padding: 2rem 0;
   margin-left: 3%;
   margin-right: -.25em;
   /* Clearfix */
@@ -89,24 +125,27 @@ a:hover {
   *overflow: visible;
 }
 
-.span-grid {
-  width: 97%;
-}
+/* span page */
+.span-grid { width: 97%; }
 
+/* two columns */
 .one-of-two { width: 47%; }
 
+/* three columns */
 .one-of-three { width: 30.36%; }
 .two-of-three { width: 63.666666666%; }
 
+/* four columns */
 .one-of-four { width: 22.05%; }
 .three-of-four { width: 72%; }
 
+/* five columns */
 .one-of-five { width: 17.07%; }
 .two-of-five { width: 37%; }
 .three-of-five { width: 57%; }
 .four-of-five { width: 77%; }
 
-
+/* media queries */
 @media screen and (max-width: 650px) {
  .grid {
    margin-left: 0;
