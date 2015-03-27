@@ -1,0 +1,32 @@
+/* This document outlines only the variables that will change based on a changing sentiment/color */
+/* For example, if Bwog is angry, header color changes to red */
+/* Yellow is the only color that requires other changes (e.g. text must change to black) */
+
+/* if green */
+header {
+  background: #50E582;
+}
+
+/* if yellow */
+header {
+  background: #FFF159;
+  color: black;
+}
+.filter-button {
+  border: 2px solid black;
+  color: black;
+}
+.filter-button:hover {
+  background-color: black;
+  color: white;
+}
+
+/* if red */
+header {
+  background: #FF6459;
+}
+
+/* if blue */
+header {
+  background: #59ACFF;
+}
