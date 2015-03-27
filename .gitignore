@@ -1,0 +1,10 @@
+*.pyc
+*.pyo
+*.sqlite
+.DS_Store
+.coverage
+flask
+app.db
+config.py
+.vagrant/
+db_repository/
