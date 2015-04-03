@@ -2,22 +2,19 @@ from bs4 import BeautifulSoup
 import datetime, requests, csv, re
 
 
-def get_urls():
-    # Gets today's date.
+def get_urls(num_days):
     d = datetime.date.today()
     urls = []
 
-    NUM_DAYS = 7
-
-    # Loops through last seven days on Bwog.
-    for day in range(NUM_DAYS):
+    # Loops through last N days on Bwog.
+    for day in range(num_days):
         url_date = str(d).replace('-', '/')
         r = requests.get("http://bwog.com/" + url_date)
         data = r.text
         soup = BeautifulSoup(data)
         article_times = soup.findAll(class_="post-datetime")
 
-        # Prints and stores all article URLs for that day.
+        # Stores all article URLs for that day.
         for dt in article_times:
             time_string = dt.get_text()
             link = dt.find("a")
@@ -31,7 +28,6 @@ def get_urls():
 
 
 def scrape(urls):
-    # Get all comments, likes, and dislikes for each article.
     max_votes1 = 0
     max_votes2 = 0
     max_votes3 = 0
@@ -42,6 +38,7 @@ def scrape(urls):
         data2 = r.text
         soup2 = BeautifulSoup(data2)
 
+        # Get all comments, likes, and dislikes for each article.
         all_comments = soup2.findAll(class_ = "reg-comment-body")
         all_likes = soup2.findAll(class_ = "like-count")
         all_dislikes = soup2.findAll(class_ = "dislike-count")
