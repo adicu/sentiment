@@ -28,9 +28,10 @@ def get_urls(num_days):
 
 
 def scrape(urls):
-    max_votes1 = 0
-    max_votes2 = 0
-    max_votes3 = 0
+    top_votes = {}
+    top_votes[1] = 0
+    top_votes[2] = 0
+    top_votes[3] = 0
     top_comments = {}
     top_comments[1] = ""
     top_comments[2] = ""
@@ -53,31 +54,24 @@ def scrape(urls):
 
             # Finds comments with most interactions.
             votes = int(like) + int(dislike)
-            if votes > max_votes3:
-                if votes < max_votes2:
-                    max_votes3 = votes
+            if votes > top_votes[3]:
+                if votes < top_votes[2]:
+                    top_votes[3] = votes
                     top_comments[3] = [comment, votes, a]
-                elif votes < max_votes1:
-                    max_votes3 = max_votes2
-                    max_votes2 = votes
+                elif votes < top_votes[1]:
+                    top_votes[3] = top_votes[2]
+                    top_votes[2] = votes
                     top_comments[3] = top_comments[2]
                     top_comments[2] = [comment, votes, a]
                 else:
-                    max_votes3 = max_votes2
-                    max_votes2 = max_votes1
-                    max_votes1 = votes
+                    top_votes[3] = top_votes[2]
+                    top_votes[2] = top_votes[1]
+                    top_votes[1] = votes
                     top_comments[3] = top_comments[2]
                     top_comments[2] = top_comments[1]
                     top_comments[1] = [comment, votes, a]
 
-    return top_comments
-
-
-def main():
-    num_days = 7
-    urls = get_urls(num_days)
-    top_comments = scrape(urls)
     for comment_num in top_comments:
-        print(top_comments[comment_num][1],
-              top_comments[comment_num][0].rstrip().lstrip())
-main()
+        top_comments[comment_num][0].rstrip().lstrip()
+
+    return top_comments, top_votes
