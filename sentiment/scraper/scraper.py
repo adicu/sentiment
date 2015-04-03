@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import datetime, requests, csv, re
+import datetime, requests
 
 
 def get_urls(num_days):
@@ -32,6 +32,9 @@ def scrape(urls):
     max_votes2 = 0
     max_votes3 = 0
     top_comments = {}
+    top_comments[1] = ""
+    top_comments[2] = ""
+    top_comments[3] = ""
 
     for a in urls:
         r = requests.get(a)
@@ -57,12 +60,24 @@ def scrape(urls):
                 elif votes < max_votes1:
                     max_votes3 = max_votes2
                     max_votes2 = votes
+                    top_comments[3] = top_comments[2]
                     top_comments[2] = [comment, votes, a]
                 else:
-                    temp = max_votes2
+                    max_votes3 = max_votes2
                     max_votes2 = max_votes1
-                    max_votes3 = temp
                     max_votes1 = votes
+                    top_comments[3] = top_comments[2]
+                    top_comments[2] = top_comments[1]
                     top_comments[1] = [comment, votes, a]
 
     return top_comments
+
+
+def main():
+    num_days = 7
+    urls = get_urls(num_days)
+    top_comments = scrape(urls)
+    for comment_num in top_comments:
+        print(top_comments[comment_num][1],
+              top_comments[comment_num][0].rstrip().lstrip())
+main()
