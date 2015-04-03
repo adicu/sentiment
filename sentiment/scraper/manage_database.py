@@ -145,4 +145,5 @@ def main():
     display_table()
     #selection = get_entry(today)
     #display_entry(selection)
+
 main()

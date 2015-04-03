@@ -10,6 +10,9 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 
+import models
+
+
 @app.route("/")
 def home():
     return render_template('index.html')
