@@ -4,30 +4,27 @@
   <head>
     <link rel="stylesheet" type="text/css" href="../static/css/style.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../static/js/resources.js"></script>
   </head>
 
   <body>
     <div class="wrapper">
-      <!-- <nav class="filter">
-        <ul>
-          <a href="#daily"><li class="filter-button">Daily</li></a>
-          <a href="#weekly"><li class="filter-button">Weekly</li></a>
-          <a href="#monthly"><li class="filter-button">Monthly</li></a>
-          <a href="#yearly"><li class="filter-button">Yearly</li></a>
-        </ul>
-      </nav> -->
       <header>
         <h2>March 6, 2015</h2>
         <h1>Bwog is Happy</h1>
-        <nav class="filter">
-          <a href="#daily"><div class="filter-button">Daily</div></a>
-          <a href="#weekly"><div class="filter-button">Weekly</div></a>
-          <a href="#monthly"><div class="filter-button">Monthly</div></a>
-          <a href="#yearly"><div class="filter-button">Yearly</div></a>
+        <div id="nav-phantom"></div>
+        <nav>
+          <a href="#daily"><div class="nav-button">Daily</div></a>
+          <a href="#weekly"><div class="nav-button">Weekly</div></a>
+          <a href="#monthly"><div class="nav-button">Monthly</div></a>
+          <a href="#yearly"><div class="nav-button">Yearly</div></a>
         </nav>
       </header>
+
       <section class="container">
         <div class="grid">
           <div id="daily" class="time-span">
@@ -102,19 +99,5 @@
         </div>
       </footer>
     </div>
-
-    <script>
-       $(document).ready(function(){
-         $(window).bind('scroll', function() {
-         var navHeight = $( window ).height() - 55;
-           if ($(window).scrollTop() > navHeight) {
-             $('nav').addClass('fixed');
-           }
-           else {
-             $('nav').removeClass('fixed');
-           }
-        });
-      });
-    </script>
   </body>
 </html>

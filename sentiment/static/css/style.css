@@ -40,42 +40,47 @@ a:hover {
 }
 
 /* nav bar, unfixed */
-.nav {
+nav {
   padding: 2rem 0;
+  transition: all 0.4s ease;
+  width: 100%;
 }
 nav a {
   border-bottom: none;
 }
-.filter-button {
+.nav-button {
   border: 2px solid white;
   border-radius: 0.5rem;
   color: white;
   display: inline-block;
   margin: 0 2rem;
   padding: 1rem 2rem;
+  text-align: center;
+  transition: padding 0.4s ease;
 }
-.filter-button:hover {
+.nav-button:hover {
   background-color: white;
   color: black;
 }
 
 /* nav bar, fixed */
 .fixed {
+  position: fixed;
+  top: 0;
   background-color: rgba(255, 255, 255, 0.75);
   padding: 1rem 0;
-  position: fixed;
-  text-align: center;
-  top: 0;
-  width: 100%;
   z-index: 999;
 }
-.fixed .filter-button {
+#nav-phantom {
+  height: 7.4375rem;
+  visibility: hidden;
+}
+.fixed .nav-button {
   border-color: black;
   color: black;
-  margin: 0 0.75rem;
   padding: 0.5rem 1rem;
 }
-.fixed .filter-button:hover {
+.fixed .nav-button:hover {
   background-color: black;
   color: white;
 }
@@ -115,14 +120,11 @@ footer a:hover {
 
 .unit {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
   vertical-align: top;
   margin-left: 3%;
   margin-right: -.25em;
   /* Clearfix */
   overflow: hidden;
-  *overflow: visible;
 }
 
 /* span page */
