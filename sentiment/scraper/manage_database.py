@@ -6,6 +6,25 @@ import scraper
 import models
 
 
+def create_table():
+    db = create_engine("sqlite:///../db/app.db", echo = False)
+
+    metadata = MetaData(db)
+
+    days = Table("days", metadata,
+                 Column("id", Integer, primary_key = True),
+                 Column("date", DateTime, nullable=False),
+                 Column("sentiment", Float, nullable=False),
+                 Column("comment1", String, nullable=False),
+                 Column("comment1_url", String, nullable=False),
+                 Column("comment2", String, nullable=False),
+                 Column("comment2_url", String, nullable=False),
+                 Column("comment3", String, nullable=False),
+                 Column("comment3_url", String, nullable=False)
+                 )
+    days.create()
+
+
 def add_entry():
     """
     Adds an entry for today. Includes today's date, the sentiment, the top
@@ -63,7 +82,6 @@ def delete_entry(date):
 
 
 def main():
-    add_entry()
-    delete_entry(date.today())
+    create_table()
 
 main()
