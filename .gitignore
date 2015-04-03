@@ -6,4 +6,3 @@
 flask
 config.py
 .vagrant/
-migrations/
