@@ -1,7 +1,6 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sentiment import db
-from datetime import date
 import scraper
 import models
 
@@ -41,8 +40,6 @@ def add_entry():
 
     session = Session()
 
-    days.drop(db)
-
     comment_index = 0
     vote_index = 1
     url_index = 2
@@ -59,10 +56,15 @@ def add_entry():
                        comment3=top_comments[3][comment_index],
                        comment3_url=top_comments[3][url_index],
                        )
-
     session.add(today)
     session.commit()
     session.flush()
+
+    s = days.select()
+    rs = s.execute()
+
+    for row in rs:
+        print(row)
 
 
 def delete_entry(date):
@@ -82,6 +84,6 @@ def delete_entry(date):
 
 
 def main():
-    create_table()
+    add_entry()
 
 main()
