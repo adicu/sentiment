@@ -1,9 +1,29 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from sentiment import db
 from datetime import date
 
 import scraper
 from sentiment.models import Day
+
+def create_table():
+    db = create_engine("sqlite:///../db/app.db", echo = False)
+
+    metadata = MetaData(db)
+
+    days = Table("days", metadata,
+                 Column("id", Integer, primary_key = True),
+                 Column("date", DateTime, nullable=False),
+                 Column("sentiment", Float, nullable=False),
+                 Column("comment1", String, nullable=False),
+                 Column("comment1_url", String, nullable=False),
+                 Column("comment2", String, nullable=False),
+                 Column("comment2_url", String, nullable=False),
+                 Column("comment3", String, nullable=False),
+                 Column("comment3_url", String, nullable=False)
+                 )
+    days.create()
+
 
 def add_entry():
     """
@@ -11,12 +31,13 @@ def add_entry():
     3 comments and their associated article urls.
     :return: None
     """
-    db = create_engine("sqlite///app.db", echo = False)
+
+    db = create_engine("sqlite:///../db/app.db", echo = False)
     metadata = MetaData(db)
-
     days = Table("days", metadata, autoload = True)
-
+    daymapper = mapper(models.Day, days)
     session = Session()
+    days.drop(db)
 
     comment_index = 0
     vote_index = 1
@@ -43,15 +64,25 @@ def add_entry():
     print(today.comment1)
     print(today.comment2)
     print(today.comment3)
-    """
+
     session.add(today)
     session.commit()
     session.flush()
-    session.delete(today)
+
+
+def delete_entry(date):
+    db = create_engine("sqlite:///../db/app.db", echo = False)
+    metadata = MetaData(db)
+    days = Table("days", metadata, autoload = True)
+    session = Session()
+    removal_date = session.query(models.Day).filter_by(date = date).first()
+    
+    session.delete(removal_date)
+    session.commit()
     session.flush()
-    """
+
 
 def main():
-    add_entry()
+    create_table()
 
 main()
