@@ -1,19 +1,21 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from sentiment import db
-from datetime import date
 import scraper
 import models
+from datetime import date
 
 
 def create_table():
-    db = create_engine("sqlite:///../db/app.db", echo = False)
-
+    """
+    Creates the table.
+    :return:
+    """
+    db = create_engine("sqlite:///../db/app.db", echo=False)
     metadata = MetaData(db)
 
     days = Table("days", metadata,
-                 Column("id", Integer, primary_key = True),
-                 Column("date", DateTime, nullable=False),
+                 Column("id", Integer, primary_key=True),
+                 Column("date", Date, nullable=False),
                  Column("sentiment", Float, nullable=False),
                  Column("comment1", String, nullable=False),
                  Column("comment1_url", String, nullable=False),
@@ -22,36 +24,44 @@ def create_table():
                  Column("comment3", String, nullable=False),
                  Column("comment3_url", String, nullable=False)
                  )
+
     days.create()
 
 
-def add_entry():
+def delete_table():
     """
-    Adds an entry for today. Includes today's date, the sentiment, the top
-    3 comments and their associated article urls.
+    Deletes all data.
     :return: None
     """
-    db = create_engine("sqlite:///../db/app.db", echo = False)
-
+    db = create_engine("sqlite:///../db/app.db", echo=False)
     metadata = MetaData(db)
-
-    days = Table("days", metadata, autoload = True)
-
-    daymapper = mapper(models.Day, days)
-
-    session = Session()
+    days = Table("days", metadata, autoload=True)
 
     days.drop(db)
 
+
+def add_entry(date):
+    """
+    Adds an entry for today. Includes today's date, the sentiment, the top
+    3 comments and their associated article urls.
+    :param: date: the date to be added.
+    :return: None
+    """
+    db = create_engine("sqlite:///../db/app.db", echo=False)
+    metadata = MetaData(db)
+    days = Table("days", metadata, autoload=True)
+
+    mapper(models.Day, days)
+
+    session = Session()
+
     comment_index = 0
-    vote_index = 1
     url_index = 2
 
-    num_days = 7
-    urls = scraper.get_urls(num_days)
-    top_comments, top_votes = scraper.scrape(urls)
+    sentiment, top_comments, top_votes = scraper.analyze()
 
-    today = models.Day(sentiment = 0.5,
+    today = models.Day(date=date,
+                       sentiment=sentiment.polarity,
                        comment1=top_comments[1][comment_index],
                        comment1_url=top_comments[1][url_index],
                        comment2=top_comments[2][comment_index],
@@ -59,29 +69,78 @@ def add_entry():
                        comment3=top_comments[3][comment_index],
                        comment3_url=top_comments[3][url_index],
                        )
-
     session.add(today)
     session.commit()
     session.flush()
 
 
 def delete_entry(date):
-    db = create_engine("sqlite:///../db/app.db", echo = False)
+    """
+    Deletes the entry on a date.
+    :param date: the date to remove.
+    :return: None
+    """
+    db = create_engine("sqlite:///../db/app.db", echo=False)
+    metadata = MetaData(db)
+    days = Table("days", metadata, autoload=True)
+
+    d = days.delete(days.c.date == date)
+    d.execute()
+
+
+def display_table():
+    """
+    Displays the entire days table.
+    :return: None
+    """
+    db = create_engine("sqlite:///../db/app.db", echo=False)
 
     metadata = MetaData(db)
 
-    days = Table("days", metadata, autoload = True)
+    # The table of data
+    days = Table("days", metadata, autoload=True)
 
-    session = Session()
+    s = days.select()
+    rs = s.execute()
 
-    removal_date = session.query(models.Day).filter_by(date = date).first()
+    for row in rs:
+        print(row)
 
-    session.delete(removal_date)
-    session.commit()
-    session.flush()
+
+def get_entry(date):
+    """
+    Gets an entry from a specific date.
+    :param date: the date of the entry to get.
+    :return: the row in the table selected.
+    """
+    db = create_engine("sqlite:///../db/app.db", echo=False)
+    metadata = MetaData(db)
+    days = Table("days", metadata, autoload=True)
+
+    s = days.select(days.c.date == date)
+    return s
+
+
+def display_entry(selection):
+    """
+    Displays an entry in the table.
+    :param s: the selected entry.
+    :return: None
+    """
+    rs = selection.execute()
+    for row in rs:
+        print(row)
 
 
 def main():
-    create_table()
-
+    """
+    Tests the database.
+    :return: None
+    """
+    today = date.today()
+    #add_entry(today)
+    #delete_entry(today)
+    display_table()
+    #selection = get_entry(today)
+    #display_entry(selection)
 main()

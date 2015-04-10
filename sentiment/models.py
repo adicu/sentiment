@@ -1,24 +1,12 @@
-from datetime import datetime
+from datetime import date
 
 from sentiment import db
 
-class Day(db.Model):
+class Day(object):
 
-    __tablename__ = "days"
-
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, nullable=False)
-    sentiment = db.Column(db.Float, nullable=False)
-    comment1 = db.Column(db.String, nullable=False)
-    comment1_url = db.Column(db.String, nullable=False)
-    comment2 = db.Column(db.String, nullable=False)
-    comment2_url = db.Column(db.String, nullable=False)
-    comment3 = db.Column(db.String, nullable=False)
-    comment3_url = db.Column(db.String, nullable=False)
-
-    def __init__(self, sentiment, comment1, comment1_url,
+    def __init__(self, date, sentiment, comment1, comment1_url,
     			comment2, comment2_url, comment3, comment3_url):
-        self.date = datetime.today()
+        self.date = date
         self.sentiment = sentiment
         self.comment1 = comment1
         self.comment1_url = comment1_url
