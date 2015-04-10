@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import datetime, requests
+from textblob import TextBlob
 
 
 def get_urls(num_days):
@@ -36,6 +37,7 @@ def scrape(urls):
     top_comments[1] = ""
     top_comments[2] = ""
     top_comments[3] = ""
+    comments = []
 
     for a in urls:
         r = requests.get(a)
@@ -49,6 +51,7 @@ def scrape(urls):
 
         for c, l, d in zip(all_comments, all_likes, all_dislikes):
             comment = c.get_text()
+            comments.append(comment.lstrip().rstrip())
             like = l.get_text()
             dislike = d.get_text()
 
@@ -72,6 +75,21 @@ def scrape(urls):
                     top_comments[1] = [comment, votes, a]
 
     for comment_num in top_comments:
-        top_comments[comment_num][0].rstrip().lstrip()
+        top_comments[comment_num][0] = top_comments[comment_num][0].rstrip().\
+            lstrip()
 
-    return top_comments, top_votes
+    return comments, top_comments, top_votes
+
+
+def analyze():
+    num_days = 7
+    urls = get_urls(num_days)
+    comments, top_comments, top_votes = scrape(urls)
+    all_comments = ""
+    for comment in comments:
+        all_comments += comment + "\t"
+    comment_blob = TextBlob(all_comments)
+
+    return comment_blob.sentiment, top_comments, top_votes
+
+analyze()
