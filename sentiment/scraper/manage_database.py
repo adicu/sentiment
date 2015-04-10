@@ -3,6 +3,8 @@ from sqlalchemy.orm import *
 import scraper
 import models
 from datetime import date as d
+from datetime import timedelta
+from textblob import TextBlob
 
 
 def create_table():
@@ -119,14 +121,14 @@ def get_entry(date):
     metadata = MetaData(db)
     days = Table("days", metadata, autoload=True)
 
-    s = days.select(days.c.date == date)
-    return s
+    selection = days.select(days.c.date == date)
+    return selection
 
 
 def display_entry(selection):
     """
     Displays an entry in the table.
-    :param s: the selected entry.
+    :param selection: the selected entry.
     :return: None
     """
     rs = selection.execute()
@@ -139,9 +141,9 @@ def main():
     Tests the database.
     :return: None
     """
-    today = d.today()
-    #add_entry(today)
-    #delete_entry(today)
+    #day = d.today() - timedelta(days=0)
+    #add_entry(day)
+    #delete_entry(day)
     display_table()
     #selection = get_entry(today)
     #display_entry(selection)

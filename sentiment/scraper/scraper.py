@@ -71,8 +71,8 @@ def scrape(urls):
             like = l.get_text()
             dislike = d.get_text()
 
-            # Finds comments with most interactions.
-            votes = int(like) + int(dislike)
+            # Finds comments with most upvotes.
+            votes = int(like) - int(dislike)
             if votes > top_votes[3]:
                 if votes < top_votes[2]:
                     top_votes[3] = votes
