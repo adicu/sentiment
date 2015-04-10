@@ -3,8 +3,14 @@ import datetime, requests
 from textblob import TextBlob
 
 
-def get_urls(num_days):
-    d = datetime.date.today()
+def get_urls(date, num_days):
+    """
+    Gets urls for the past num_days from date.
+    :param date: the date to get urls from.
+    :param num_days: the number of days to search.
+    :return: the urls to the articles.
+    """
+    d = date
     urls = []
 
     # Loops through last N days on Bwog.
@@ -29,16 +35,26 @@ def get_urls(num_days):
 
 
 def scrape(urls):
-    top_votes = {}
-    top_votes[1] = 0
-    top_votes[2] = 0
-    top_votes[3] = 0
+    """
+    Scrapes the webpages for information on comments.
+    :param urls: the article urls.
+    :return: a list of all comments, the top comments, and the votes on the
+    top comments.
+    """
+    # Dictionary of top comments.
     top_comments = {}
     top_comments[1] = ""
     top_comments[2] = ""
     top_comments[3] = ""
+    # Dictionary of votes on top comments.
+    top_votes = {}
+    top_votes[1] = 0
+    top_votes[2] = 0
+    top_votes[3] = 0
+    # List of all comments.
     comments = []
 
+    # Goes through all urls.
     for a in urls:
         r = requests.get(a)
         data2 = r.text
@@ -74,6 +90,7 @@ def scrape(urls):
                     top_comments[2] = top_comments[1]
                     top_comments[1] = [comment, votes, a]
 
+    # Formats top comments to remove newline characters.
     for comment_num in top_comments:
         top_comments[comment_num][0] = top_comments[comment_num][0].rstrip().\
             lstrip()
@@ -81,15 +98,21 @@ def scrape(urls):
     return comments, top_comments, top_votes
 
 
-def analyze():
-    num_days = 7
-    urls = get_urls(num_days)
+def analyze(date, num_days):
+    """
+    Analyzes the articles for a date for the past num_days.
+    :param date: the date to start analyzing from.
+    :param num_days: the number of days back to analyze.
+    :return: the sentiment, the top comments, and the top votes.
+    """
+    # Scrapes the urls for comments, top comments, and top votes.
+    urls = get_urls(date, num_days)
     comments, top_comments, top_votes = scrape(urls)
+
+    # Gets the sentiment from all the comments combined together.
     all_comments = ""
     for comment in comments:
         all_comments += comment + "\t"
     comment_blob = TextBlob(all_comments)
 
     return comment_blob.sentiment, top_comments, top_votes
-
-analyze()

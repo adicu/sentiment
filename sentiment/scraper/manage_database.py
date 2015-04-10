@@ -2,7 +2,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 import scraper
 import models
-from datetime import date
+from datetime import date as d
 
 
 def create_table():
@@ -58,7 +58,9 @@ def add_entry(date):
     comment_index = 0
     url_index = 2
 
-    sentiment, top_comments, top_votes = scraper.analyze()
+    num_days = 7
+
+    sentiment, top_comments, top_votes = scraper.analyze(date, num_days)
 
     today = models.Day(date=date,
                        sentiment=sentiment.polarity,
@@ -137,7 +139,7 @@ def main():
     Tests the database.
     :return: None
     """
-    today = date.today()
+    today = d.today()
     #add_entry(today)
     #delete_entry(today)
     display_table()
