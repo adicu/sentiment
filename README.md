@@ -13,49 +13,6 @@ Currently, TextBlob is the library used to perform sentiment analysis on the com
 |-- Vagrantfile
 |-- bootstrap.sh
 |-- sentiment
-<<<<<<< HEAD
-	\
-	|-- days.py
-	|-- sentiment.py
-	|-- __init__.py
-	|-- config
-		\
-		|-- __init__.py
-	|-- db
-		\
-		|-- app.db
-		|-- db_repository
-			\
-			|-- README
-			|-- __init__.py
-			|-- manage.py
-			|-- migrate.cfg
-			|-- versions
-				\
-				|-- 001_migration.py
-				|-- __init__.py
-	|-- models
-		\
-		|-- day.py
-		|-- __init__.py
-	|-- scraper
-		\
-		|-- __init__.py
-		|-- scraper.py
-	|-- static
-		\
-		|-- css
-			\
-			|-- colors.css
-			|-- style.css
-		|-- js
-			\
-			|-- resources.js
-	|-- templates
-		\
-		|-- index.html
-		|-- layout.html
-=======
     \
     |-- days.py
     |-- sentiment.py
@@ -87,7 +44,6 @@ Currently, TextBlob is the library used to perform sentiment analysis on the com
         \
         |-- index.html
         |-- layout.html
->>>>>>> upstream/master
 ```
 
 ## List of Developers
