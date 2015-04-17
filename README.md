@@ -8,6 +8,7 @@ Data for the sentiment project is taken from a Columbia campus news site Bwog (b
 Currently, TextBlob is the library used to perform sentiment analysis on the comment data using natural language processing.
 
 ## App Structure
+```
 |-- README.md
 |-- Vagrantfile
 |-- bootstrap.sh
@@ -53,6 +54,7 @@ Currently, TextBlob is the library used to perform sentiment analysis on the com
 		\
 		|-- index.html
 		|-- layout.html
+```
 
 ### List of Developers
 - Kimberly Tao
