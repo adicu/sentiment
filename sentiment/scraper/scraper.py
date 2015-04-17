@@ -115,8 +115,4 @@ def analyze(date, num_days):
         all_comments += comment + "\t"
     comment_blob = TextBlob(all_comments)
 
-<<<<<<< HEAD
     return comment_blob.sentiment, top_comments, top_votes
-=======
-    return top_comments, top_votes
->>>>>>> e4414a54543edf8260a91d1477c1cc808b416c02
