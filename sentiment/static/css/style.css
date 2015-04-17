@@ -1,4 +1,5 @@
 html, body {
+  color: #444;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   margin: 0;
@@ -14,12 +15,22 @@ header {
   padding: 10rem 0;
   text-align: center;
 }
+header h2 {
+  color: white;
+}
 h1 {
   font-size: 5rem;
   font-weight: 900;
 }
 h4 {
   font-style: italic;
+}
+h2,
+h3,
+h3 a,
+h4,
+h4 a {
+  color: #222;
 }
 a {
   border-bottom: 2px solid #ccc;
@@ -28,9 +39,6 @@ a {
 }
 a:hover {
   border-bottom-color: #3e4953;
-}
-.article-link {
-  color: black;
 }
 .container {
   clear: both;
