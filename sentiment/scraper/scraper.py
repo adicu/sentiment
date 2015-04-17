@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
-import datetime, requests
 from textblob import TextBlob
+import datetime, requests
 
 
 def get_urls(date, num_days):
