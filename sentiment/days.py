@@ -120,7 +120,10 @@ def get_entry(date):
     days = Table("days", metadata, autoload=True)
 
     selection = days.select(days.c.date == date)
-    return selection
+    s = selection.execute()
+    for row in s:
+        entry = row
+    return row
 
 
 def display_entry(selection):
@@ -139,10 +142,11 @@ def main():
     Tests the database.
     :return: None
     """
-    day = d.today() - timedelta(days=0)
+    day = d.today() - timedelta(days=14)
     # add_entry(day)
     # delete_entry(day)
-    display_table()
-    # selection = get_entry(day)
+    # display_table()
+    entry = get_entry(day)
+    # print(entry)
     # display_entry(selection)
 main()
