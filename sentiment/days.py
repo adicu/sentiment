@@ -10,7 +10,7 @@ def create_table():
     Creates the table.
     :return:
     """
-    db = create_engine("sqlite:///../db/app.db", echo=False)
+    db = create_engine("sqlite:///db/app.db", echo=False)
     metadata = MetaData(db)
 
     days = Table("days", metadata,
@@ -33,7 +33,7 @@ def delete_table():
     Deletes all data.
     :return: None
     """
-    db = create_engine("sqlite:///../db/app.db", echo=False)
+    db = create_engine("sqlite:///db/app.db", echo=False)
     metadata = MetaData(db)
     days = Table("days", metadata, autoload=True)
 
@@ -47,7 +47,7 @@ def add_entry(date):
     :param: date: the date to be added.
     :return: None
     """
-    db = create_engine("sqlite:///../db/app.db", echo=False)
+    db = create_engine("sqlite:///db/app.db", echo=False)
     metadata = MetaData(db)
     days = Table("days", metadata, autoload=True)
 
@@ -82,7 +82,7 @@ def delete_entry(date):
     :param date: the date to remove.
     :return: None
     """
-    db = create_engine("sqlite:///../db/app.db", echo=False)
+    db = create_engine("sqlite:///db/app.db", echo=False)
     metadata = MetaData(db)
     days = Table("days", metadata, autoload=True)
 
@@ -95,7 +95,7 @@ def display_table():
     Displays the entire days table.
     :return: None
     """
-    db = create_engine("sqlite:///../db/app.db", echo=False)
+    db = create_engine("sqlite:///db/app.db", echo=False)
 
     metadata = MetaData(db)
 
@@ -115,7 +115,7 @@ def get_entry(date):
     :param date: the date of the entry to get.
     :return: the row in the table selected.
     """
-    db = create_engine("sqlite:///../db/app.db", echo=False)
+    db = create_engine("sqlite:///db/app.db", echo=False)
     metadata = MetaData(db)
     days = Table("days", metadata, autoload=True)
 
@@ -140,9 +140,9 @@ def main():
     :return: None
     """
     day = d.today() - timedelta(days=0)
-    #add_entry(day)
-    #delete_entry(day)
-    display_table()
-    #selection = get_entry(today)
-    #display_entry(selection)
+    add_entry(day)
+    # delete_entry(day)
+    #display_table()
+    # selection = get_entry(day)
+    # display_entry(selection)
 main()
