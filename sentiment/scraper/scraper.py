@@ -34,6 +34,16 @@ def get_urls(date, num_days):
     return urls
 
 
+def get_title(url):
+    r = requests.get(url)
+    data = r.text
+    soup = BeautifulSoup(data)
+    titles = soup.findAll(class_="post-title")
+    for t in titles:
+        title = t.get_text()
+    return title
+
+
 def scrape(urls):
     """
     Scrapes the webpages for information on comments.
