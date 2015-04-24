@@ -13,6 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/resources.js') }}"></script>
     <script src="{{ url_for('static', filename='js/readmore.js') }}"></script>
+    <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
     {% endblock %}
   </head>
 
@@ -29,6 +30,10 @@
 
     <script type="text/javascript">
       $('article').readmore();
+    </script>
+
+    <script>
+      twemoji.parse(document.body, {size: 72});
     </script>
 
   </body>
