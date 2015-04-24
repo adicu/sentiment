@@ -140,9 +140,9 @@ def main():
     :return: None
     """
     day = d.today() - timedelta(days=0)
-    add_entry(day)
+    # add_entry(day)
     # delete_entry(day)
-    #display_table()
+    display_table()
     # selection = get_entry(day)
     # display_entry(selection)
 main()
