@@ -123,7 +123,7 @@ def get_entry(date):
     s = selection.execute()
     for row in s:
         entry = row
-    return row
+    return entry
 
 
 def display_entry(selection):
