@@ -32,6 +32,9 @@ h4,
 h4 a {
   color: #222;
 }
+article {
+  max-height: 5.75rem;
+}
 a {
   border-bottom: 2px solid #ccc;
   color: #ccc;

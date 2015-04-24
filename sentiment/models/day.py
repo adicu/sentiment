@@ -1,7 +1,5 @@
 from datetime import date
 
-from sentiment import db
-
 class Day(object):
 
     def __init__(self, date, sentiment, comment1, comment1_url,

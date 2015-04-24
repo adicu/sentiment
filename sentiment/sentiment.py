@@ -2,9 +2,9 @@ import os
 
 from flask import Flask, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta, date
 
-from models.day import Day
+import days
 
 
 app = Flask(__name__)
@@ -13,9 +13,8 @@ app.config.from_object('config')
 
 @app.route("/")
 def home():
-    today = datetime.now()
-    date = today.strftime("%B %d, %Y")
-    day = Day.query.filter_by(date=today).first()
+    d = datetime.now().strftime("%B %d, %Y")
+    day = days.get_entry(date.today() - timedelta(days=14))
     if day.sentiment <= -0.7:
     	mood = "Terrible"
     	color = "#ff4c40"
@@ -38,9 +37,10 @@ def home():
     	mood = "Ecstatic"
     	color = "#4ce659"
     return render_template('index.html',
-                            date = date,
+                            date = d,
                             mood = mood,
-                            header_color = color)
+                            header_color = color,
+                            day = day)
 
 if __name__ == "__main__":
     app.debug = True
