@@ -3,7 +3,7 @@
 {% block body %}
 <header style="background-color:{{ header_color }}">
   <h2>{{ date }}</h2>
-  <h1>Bwog is {{ mood }}</h1>
+  <h1>Bwog Is {{ mood|safe }}</h1>
   <div id="nav-phantom"></div>
   <nav>
     <a href="#daily"><div class="nav-button">Daily</div></a>
@@ -19,21 +19,21 @@
       <div class="unit span-grid">
         <h2>Daily Sentiments</h2>
       </div>
-      <div class="unit one-of-two">
+      <div class="unit one-of-three">
         <h3><a href="/" class="article-link">Article 1 Title Here</a></h3>
         <h4>Sentiment Here</h4>
         <article>
           <a href="{{ day.comment1_url }}"><p>{{ day.comment1 }}</p></a>
         </article>
       </div>
-      <div class="unit one-of-two">
+      <div class="unit one-of-three">
         <h3><a href="/" class="article-link">Article 2 Title Here</a></h3>
         <h4>Sentiment Here</h4>
         <article>
           <a href="{{ day.comment2_url }}"><p>{{ day.comment2 }}</p></a>
         </article>
       </div>
-      <div class="unit one-of-two">
+      <div class="unit one-of-three">
         <h3><a href="/" class="article-link">Article 3 Title Here</a></h3>
         <h4>Sentiment Here</h4>
         <article>
