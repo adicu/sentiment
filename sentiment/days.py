@@ -143,11 +143,12 @@ def main():
     Tests the database.
     :return: None
     """
-    day = d.today() - timedelta(days=14)
+    # day = d.today() - timedelta(days=14)
     # add_entry(day)
     # delete_entry(day)
-    # display_table()
+    display_table()
     # entry = get_entry(day)
     # display_entry(selection)
-# main()
-print(d.today() - timedelta(days=14))
+
+if __name__ == "__main__":
+    main()
