@@ -4,7 +4,7 @@ Sentiment is a project that analyzes the emotions of Bwog comments.
 ## Data Sources
 Data for the sentiment project is taken from a Columbia campus news site, [Bwog](bwog.com). In the future, the project may expand to include the [Columbia Spectator](columbiaspectator.com).
 
-## Sentiment Analysis API
+## Sentiment Analysis
 Currently, TextBlob is the library used to perform sentiment analysis on the comment data using natural language processing.
 
 ## App Structure
@@ -29,8 +29,8 @@ Currently, TextBlob is the library used to perform sentiment analysis on the com
         |-- __init__.py
     |-- scraper
         \
-        |-- __init__.py
         |-- scraper.py
+        |-- __init__.py
     |-- static
         \
         |-- css
@@ -39,6 +39,7 @@ Currently, TextBlob is the library used to perform sentiment analysis on the com
             |-- style.css
         |-- js
             \
+            |-- readmore.js
             |-- resources.js
     |-- templates
         \
