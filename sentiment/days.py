@@ -60,7 +60,7 @@ def add_entry(date):
     comment_index = 0
     url_index = 2
 
-    num_days = 7
+    num_days = 1
 
     sentiment, top_comments, top_votes = scraper.analyze(date,
                                                                  num_days)
@@ -146,8 +146,8 @@ def main():
     Tests the database.
     :return: None
     """
-    day_to_scrape = d.today() - timedelta(days=0)
-    # add_entry(day_to_scrape)
+    day_to_scrape = d.today() - timedelta(days=1)
+    add_entry(day_to_scrape)
     # delete_entry(day_to_scrape)
     display_table()
     # entry = get_entry(day_to_scrape)
