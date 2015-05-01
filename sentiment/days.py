@@ -1,7 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
-import scraper
-import models
+from scraper import scraper
+from models import day
 from datetime import timedelta, date as d
 
 
@@ -51,7 +51,9 @@ def add_entry(date):
     metadata = MetaData(db)
     days = Table("days", metadata, autoload=True)
 
-    mapper(models.Day, days)
+    clear_mappers()
+
+    mapper(day.Day, days)
 
     session = Session()
 
@@ -60,9 +62,10 @@ def add_entry(date):
 
     num_days = 7
 
-    sentiment, top_comments, top_votes = scraper.analyze(date, num_days)
+    sentiment, top_comments, top_votes = scraper.analyze(date,
+                                                                 num_days)
 
-    today = models.Day(date=date,
+    today = day.Day(date=date,
                        sentiment=sentiment.polarity,
                        comment1=top_comments[1][comment_index],
                        comment1_url=top_comments[1][url_index],
@@ -143,11 +146,11 @@ def main():
     Tests the database.
     :return: None
     """
-    # day = d.today() - timedelta(days=14)
-    # add_entry(day)
-    # delete_entry(day)
+    day_to_scrape = d.today() - timedelta(days=0)
+    # add_entry(day_to_scrape)
+    # delete_entry(day_to_scrape)
     display_table()
-    # entry = get_entry(day)
+    # entry = get_entry(day_to_scrape)
     # display_entry(selection)
 
 if __name__ == "__main__":

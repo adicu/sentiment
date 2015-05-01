@@ -16,7 +16,7 @@ def get_urls(date, num_days):
     # Loops through last N days on Bwog.
     for day in range(num_days):
         url_date = str(d).replace('-', '/')
-        r = requests.get("http://bwog.com/" + url_date)
+        r = requests.get("http://bwog.com/" + url_date + "/")
         data = r.text
         soup = BeautifulSoup(data)
         article_times = soup.findAll(class_="post-datetime")
