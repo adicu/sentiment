@@ -102,8 +102,10 @@ def scrape(urls):
 
     # Formats top comments to remove newline characters.
     for comment_num in top_comments:
-        top_comments[comment_num][0] = top_comments[comment_num][0].rstrip().\
-            lstrip()
+        if top_comments[comment_num]:
+            top_comments[comment_num][0] = top_comments[comment_num][0].strip()
+        else:
+            top_comments[comment_num] = ["", 0, ""]
 
     return comments, top_comments, top_votes
 
