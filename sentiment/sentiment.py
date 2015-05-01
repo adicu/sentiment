@@ -14,7 +14,7 @@ app.config.from_object('config')
 @app.route("/")
 def home():
     d = datetime.now().strftime("%B %d, %Y")
-    day = days.get_entry(date.today() - timedelta(days=16))
+    day = days.get_entry(date.today() - timedelta(days=1))
     if day.sentiment <= -0.7:
     	mood = "Terrible &#x1F621;"
     	color = "#ff4c40"
