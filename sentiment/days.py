@@ -62,8 +62,7 @@ def add_entry(date):
 
     num_days = 1
 
-    sentiment, top_comments, top_votes = scraper.analyze(date,
-                                                                 num_days)
+    sentiment, top_comments, top_votes = scraper.analyze(date, num_days)
 
     today = day.Day(date=date,
                        sentiment=sentiment.polarity,
@@ -146,7 +145,7 @@ def main():
     Tests the database.
     :return: None
     """
-    day_to_scrape = d.today() - timedelta(days=1)
+    day_to_scrape = d.today() - timedelta(days=0)
     add_entry(day_to_scrape)
     # delete_entry(day_to_scrape)
     display_table()
