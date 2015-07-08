@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from textblob import TextBlob
 import datetime, requests
+from datetime import date
 
 
 def get_urls(date, num_days):
@@ -19,7 +20,7 @@ def get_urls(date, num_days):
         r = requests.get("http://bwog.com/" + url_date + "/")
         data = r.text
         soup = BeautifulSoup(data)
-        article_times = soup.findAll(class_="post-datetime")
+        article_times = soup.findAll(class_="blog-section")
 
         # Stores all article URLs for that day.
         for dt in article_times:
@@ -38,10 +39,8 @@ def get_title(url):
     r = requests.get(url)
     data = r.text
     soup = BeautifulSoup(data)
-    titles = soup.findAll(class_="post-title")
-    for t in titles:
-        title = t.get_text()
-    return title
+    titles = soup.findAll(class_="post_title")
+    return titles[0].span.string
 
 
 def scrape(urls):
@@ -128,3 +127,11 @@ def analyze(date, num_days):
     comment_blob = TextBlob(all_comments)
 
     return comment_blob.sentiment, top_comments, top_votes
+
+def main():
+    print get_urls(date(2015,4,2),1)
+    print analyze(date(2015,4,2),1)
+    print get_title("http://bwog.com/2015/04/02/bacchtails-2015/")
+
+if __name__ == "__main__":
+    main()

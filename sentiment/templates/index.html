@@ -20,22 +20,22 @@
         <h2>Daily Sentiments</h2>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="{{ day.comment1_url }}" class="article-link">Article 1 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="{{ day.comment1_url }}" class="article-link">{{ get_titles(day.comment1_url) }}</a></h3>
+        <h4>{{ get_sentiments(day.comment1) }}</h4>
         <article>
           <p>{{ day.comment1 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="{{ day.comment2_url }}" class="article-link">Article 2 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="{{ day.comment2_url }}" class="article-link">{{ get_titles(day.comment2_url) }}</a></h3>
+        <h4>{{ get_sentiments(day.comment2) }}</h4>
         <article>
           <p>{{ day.comment2 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="{{ day.comment3_url }}" class="article-link">Article 3 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="{{ day.comment3_url }}" class="article-link">{{ get_titles(day.comment3_url) }}</a></h3>
+        <h4>{{ get_sentiments(day.comment3) }}</h4>
         <article>
           <p>{{ day.comment3 }}</p>
         </article>
@@ -47,24 +47,24 @@
         <h2>Weekly Sentiments</h2>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 1 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="{{ week.comment1_url }}" class="article-link">{{ get_titles(week.comment1_url) }}</a></h3>
+        <h4>{{ get_sentiments(week.comment1) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ week.comment1 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 2 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="{{ week.comment2_url }}" class="article-link">{{ get_titles(week.comment2_url) }}</a></h3>
+        <h4>{{ get_sentiments(week.comment2) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ week.comment2 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 3 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="{{ week.comment3_url }}" class="article-link">{{ get_titles(week.comment3_url) }}</a></h3>
+        <h4>{{ get_sentiments(week.comment3) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ week.comment3 }}</p>
         </article>
       </div>
     </div>
@@ -74,24 +74,24 @@
         <h2>Monthly Sentiments</h2>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 1 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="/" class="{{ month.comment1_url }}">{{ get_titles(month.comment1_url) }}</a></h3>
+        <h4>{{ get_sentiments(month.comment1) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ month.comment1 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 2 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="/" class="{{ month.comment2_url }}">{{ get_titles(month.comment2_url) }}</a></h3>
+        <h4>{{ get_sentiments(month.comment2) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ month.comment2 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 3 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="/" class="{{ month.comment3_url }}">{{ get_titles(month.comment3_url) }}</a></h3>
+        <h4>{{ get_sentiments(month.comment3) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ month.comment3 }}</p>
         </article>
       </div>
     </div>
@@ -101,24 +101,24 @@
         <h2>Yearly Sentiments</h2>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 1 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="/" class="{{ year.comment1_url }}">{{ get_titles(year.comment1_url) }}</a></h3>
+        <h4>{{ get_sentiments(year.comment1) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ year.comment1 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 2 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="/" class="{{ year.comment2_url }}">{{ get_titles(year.comment2_url) }}</a></h3>
+        <h4>{{ get_sentiments(year.comment2) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ year.comment2 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="article-link">Article 3 Title Here</a></h3>
-        <h4>Sentiment Here</h4>
+        <h3><a href="/" class="{{ year.comment3_url }}">{{ get_titles(year.comment3_url) }}</a></h3>
+        <h4>{{ get_sentiments(year.comment3) }}</h4>
         <article>
-          <a href="/"><p></p></a>
+          <p>{{ year.comment3 }}</p>
         </article>
       </div>
     </div>
