@@ -195,9 +195,12 @@ def main():
     Tests the database.
     :return: None
     """
-    display_table("days")
-    display_table("weeks")
-    display_table("months")
+    delete_table("years")
+    create_table("years")
+    add_entry("years",d(2015,4,1))
+    #display_table("days")
+    #display_table("weeks")
+    #display_table("months")
     display_table("years")
 
 if __name__ == "__main__":

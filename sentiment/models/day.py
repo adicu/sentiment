@@ -3,7 +3,7 @@ from datetime import date
 class Day(object):
 
     def __init__(self, date, sentiment, comment1, comment1_url,
-                comment1_title, comment2, comment2_url, comment2_title, 
+    			comment1_title, comment2, comment2_url, comment2_title, 
                 comment3, comment3_url, comment3_title):
         self.date = date
         self.sentiment = sentiment
