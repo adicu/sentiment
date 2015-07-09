@@ -8,7 +8,7 @@ from datetime import timedelta, date as d, datetime
 def create_table(table_name):
     """
     Creates the table.
-    :return:
+    :return: None
     """
     db = create_engine("sqlite:///db/app.db", echo=False)
     metadata = MetaData(db)
@@ -19,10 +19,13 @@ def create_table(table_name):
                  Column("sentiment", Float, nullable=False),
                  Column("comment1", String, nullable=False),
                  Column("comment1_url", String, nullable=False),
+                 Column("comment1_title", String, nullable=False),
                  Column("comment2", String, nullable=False),
                  Column("comment2_url", String, nullable=False),
+                 Column("comment2_title", String, nullable=False),
                  Column("comment3", String, nullable=False),
-                 Column("comment3_url", String, nullable=False)
+                 Column("comment3_url", String, nullable=False),
+                 Column("comment3_title", String, nullable=False)
                  )
 
     days.create()
@@ -42,8 +45,8 @@ def delete_table(table_name):
 
 def add_entry(table_name, date):
     """
-    Adds an entry for today. Includes today's date, the sentiment, the top
-    3 comments and their associated article urls.
+    Adds an entry for the specified day/week/month/year.
+    Includes date, comments, article urls, and article titles.
     :param: date: the date to be added.
     :return: None
     """
@@ -76,17 +79,20 @@ def add_entry(table_name, date):
             date = d.today()
         num_days = (date - d(date.year, 1, 1)).days + 1
 
-    sentiment, top_comments, top_votes = scraper.analyze(date, num_days)
+    sentiment, top_comments, top_votes, titles = scraper.analyze(date, num_days)
 
-    # date indicates the first day of the week, month, of year analyzed
+    # date indicates the first day of the week, month, or year analyzed
     today = day.Day(date=date - timedelta(days=num_days-1),
                        sentiment=sentiment.polarity,
                        comment1=top_comments[1][comment_index],
                        comment1_url=top_comments[1][url_index],
+                       comment1_title=titles[1],
                        comment2=top_comments[2][comment_index],
                        comment2_url=top_comments[2][url_index],
+                       comment2_title=titles[2],
                        comment3=top_comments[3][comment_index],
                        comment3_url=top_comments[3][url_index],
+                       comment3_title=titles[3],
                        )
     session.add(today)
     session.commit()
@@ -109,7 +115,7 @@ def delete_entry(table_name, date):
 
 def display_table(table_name):
     """
-    Displays the entire days table.
+    Displays the entire table.
     :return: None
     """
     db = create_engine("sqlite:///db/app.db", echo=False)
@@ -164,14 +170,22 @@ def display_entry(selection):
 
 
 def iso_year_start(iso_year):
-    "The gregorian calendar date of the first day of the given ISO year"
+    """
+    The gregorian calendar date of the 
+    first day of the given ISO year.
+    :return: date object
+    """
     fourth_jan = d(iso_year, 1, 4)
     delta = timedelta(fourth_jan.isoweekday()-1)
     return fourth_jan - delta 
 
 
 def iso_to_gregorian(iso_year, iso_week, iso_day):
-    "Gregorian calendar date for the given ISO year, week and day"
+    """
+    Gregorian calendar date for the 
+    given ISO year, week and day.
+    :return: date object
+    """
     year_start = iso_year_start(iso_year)
     return year_start + timedelta(days=iso_day-1, weeks=iso_week-1)
 

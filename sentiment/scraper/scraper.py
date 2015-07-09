@@ -36,11 +36,18 @@ def get_urls(date, num_days):
 
 
 def get_title(url):
-    r = requests.get(url)
-    data = r.text
-    soup = BeautifulSoup(data)
-    titles = soup.findAll(class_="post_title")
-    return titles[0].span.string
+    """
+    Gets the title of the article's url.
+    :return: the title name, otherwise ""
+    """
+    if url == "":
+        return ""
+    else:
+        r = requests.get(url)
+        data = r.text
+        soup = BeautifulSoup(data)
+        titles = soup.findAll(class_="post_title")
+        return titles[0].span.string
 
 
 def scrape(urls):
@@ -106,7 +113,12 @@ def scrape(urls):
         else:
             top_comments[comment_num] = ["", 0, ""]
 
-    return comments, top_comments, top_votes
+    titles = {}
+    titles[1] = get_title(top_comments[1][2])
+    titles[2] = get_title(top_comments[2][2])
+    titles[3] = get_title(top_comments[3][2])
+
+    return comments, top_comments, top_votes, titles
 
 
 def analyze(date, num_days):
@@ -118,7 +130,7 @@ def analyze(date, num_days):
     """
     # Scrapes the urls for comments, top comments, and top votes.
     urls = get_urls(date, num_days)
-    comments, top_comments, top_votes = scrape(urls)
+    comments, top_comments, top_votes, titles = scrape(urls)
 
     # Gets the sentiment from all the comments combined together.
     all_comments = ""
@@ -126,9 +138,13 @@ def analyze(date, num_days):
         all_comments += comment + "\t"
     comment_blob = TextBlob(all_comments)
 
-    return comment_blob.sentiment, top_comments, top_votes
+    return comment_blob.sentiment, top_comments, top_votes, titles
 
 def main():
+    """
+    Tests the scraper.
+    :return: None
+    """
     print get_urls(date(2015,4,2),1)
     print analyze(date(2015,4,2),1)
     print get_title("http://bwog.com/2015/04/02/bacchtails-2015/")
