@@ -61,6 +61,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="http://code.highcharts.com/modules/exporting.js"></script>
+        <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
 
         <script type="text/javascript">
         $(function () {
@@ -71,6 +72,70 @@
                     }
                 }
             });
+
+            var i;
+            var plot = {{ sentiment_data|safe }}
+            
+            for (i = 0; i < plot.length; i++) {
+                if (plot[i] <= -0.7) {
+                    plot[i] = {
+                        y: plot[i],
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f621.png)'
+                        }
+                    };
+                } else if (plot[i] > -0.7 && plot[i] <= -0.4) {
+                    plot[i] = {
+                        y: plot[i],
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f625.png)'
+                        }
+                    };
+                } else if (plot[i] > -0.4 && plot[i] <= -0.1) {
+                    plot[i] = {
+                        y: plot[i],
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f615.png)'
+                        }
+                    };
+                } else if (plot[i] == 0.0) {
+                    plot[i] = {
+                        y: plot[i],
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f634.png)'
+                        }
+                    };
+                } else if (plot[i] > -0.1 && plot[i] <= 0.1) {
+                    plot[i] = {
+                        y: plot[i],
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f610.png)'
+                        }
+                    };
+                } else if (plot[i] > 0.1 && plot[i] <= 0.4) {
+                    plot[i] = {
+                        y: plot[i],
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f600.png)'
+                        }
+                    };
+                } else if (plot[i] > 0.4 && plot[i] <= 0.7) {
+                    plot[i] = {
+                        y: plot[i],
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f60e.png)'
+                        }
+                    };
+                } else {
+                    plot[i] = {
+                        y: plot[i],
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f60d.png)'
+                        }
+                    };
+                }
+            }
+
             $('#container').highcharts({
                 chart: {
                     type: 'spline'
@@ -106,7 +171,7 @@
                     marker: {
                         symbol: 'square'
                     },
-                    data: {{ sentiment_data|safe }}
+                    data: plot
 
                 }],
                 credits: {
