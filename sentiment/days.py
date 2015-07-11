@@ -171,6 +171,24 @@ def display_entry(selection):
     for row in rs:
         print(row)
 
+def update_tables():
+    """
+    Updates all tables each day.
+    :param date: today's date
+    :return: None
+    """
+    date = d.today()
+
+    delete_entry("days", date)
+    delete_entry("weeks", date)
+    delete_entry("months", date)
+    delete_entry("years", date)
+
+    add_entry("days", date)
+    add_entry("days", date)
+    add_entry("days", date)
+    add_entry("days", date)
+
 
 def iso_year_start(iso_year):
     """
@@ -229,10 +247,9 @@ def main():
     :return: None
     """
     #display_table("days")
-    #display_table("days")
     #display_table("weeks")
     #display_table("months")
-    display_table("years")
+    #display_table("years")
 
 if __name__ == "__main__":
     main()
