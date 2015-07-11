@@ -70,7 +70,10 @@ def add_entry(table_name, date):
         date = iso_to_gregorian(iso_date[0],iso_date[1],7)
 
     elif table_name == "months":
-        date = d(date.year, date.month + 1, 1) - timedelta(days=1)
+        if date.month == 12: 
+            date = d(date.year, 12, 31)
+        else:
+            date = d(date.year, date.month + 1, 1) - timedelta(days=1)
         num_days = (date - d(date.year, date.month, 1)).days + 1
 
     elif table_name == "years":
@@ -190,14 +193,42 @@ def iso_to_gregorian(iso_year, iso_week, iso_day):
     return year_start + timedelta(days=iso_day-1, weeks=iso_week-1)
 
 
+def get_mood(sentiment):
+
+    if sentiment <= -0.7:
+        mood = "Terrible &#x1F621;"
+        color = "#ff4c40"
+    elif sentiment > -0.7 and sentiment <= -0.4:
+        mood = "Bad &#x1F625;"
+        color = "#ff6459"
+    elif sentiment > -0.4 and sentiment <= -0.1:
+        mood = "Meh &#x1F615;"
+        color = "#ff9359"
+    elif sentiment == 0.0:
+        mood = "Sleeping &#x1f634"
+        color = "#808080"
+    elif sentiment > -0.1 and sentiment <= 0.1:
+        mood = "Neutral &#x1F610;"
+        color = "#fdd835"
+    elif sentiment > 0.1 and sentiment <= 0.4:
+        mood = "Fine &#x1F600;"
+        color = "#a9e66c"
+    elif sentiment > 0.4 and sentiment <= 0.7:
+        mood = "Cheery &#x1F60E;"
+        color = "#50e582"
+    else:
+        mood = "Ecstatic &#x1F60D;"
+        color = "#4ce659"
+
+    return mood, color
+
+
 def main():
     """
     Tests the database.
     :return: None
     """
-    delete_table("years")
-    create_table("years")
-    add_entry("years",d(2015,4,1))
+    #display_table("days")
     #display_table("days")
     #display_table("weeks")
     #display_table("months")

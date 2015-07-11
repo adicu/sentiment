@@ -1,8 +1,9 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta, date
+from dateutil.relativedelta import relativedelta
 from scraper import scraper
 from textblob import TextBlob
 import json
@@ -14,12 +15,13 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 # all dates in April 2015 work with the database
-test = date(2015,4,22)
+test = date(2015,4,30)
 d = test.strftime("%B %d, %Y")
 day = days.get_entry("days", test)
 week = days.get_entry("weeks", test)
 month = days.get_entry("months", test)
 year = days.get_entry("years", test)
+mood, color = days.get_mood(day.sentiment)
 
 @app.route("/")
 def home():
@@ -27,7 +29,6 @@ def home():
     Displays the top 3 comments
     of the day/week/month/year
     """
-    mood, color = get_mood(day.sentiment)
 
     return render_template('index.html',
                             date = d,
@@ -39,62 +40,104 @@ def home():
                             year = year)
 
 
-def get_mood(sentiment):
+"""
+created different routes for daily/weekly/monthly/yearly,
+because each will be compared with different trends
+(e.g. temperature, library wifi usage, twitter sentiment)
+"""
+active_page = {'Daily':'','Weekly':'','Monthly':'','Yearly':''}
 
-    if sentiment <= -0.7:
-        mood = "Terrible &#x1F621;"
-        color = "#ff4c40"
-    elif sentiment > -0.7 and sentiment <= -0.4:
-        mood = "Bad &#x1F625;"
-        color = "#ff6459"
-    elif sentiment > -0.4 and sentiment <= -0.1:
-        mood = "Meh &#x1F615;"
-        color = "#ff9359"
-    elif sentiment == 0.0:
-        mood = "Sleeping &#x1f634"
-        color = "#808080"
-    elif sentiment > -0.1 and sentiment <= 0.1:
-        mood = "Neutral &#x1F610;"
-        color = "#fdd835"
-    elif sentiment > 0.1 and sentiment <= 0.4:
-        mood = "Fine &#x1F600;"
-        color = "#a9e66c"
-    elif sentiment > 0.4 and sentiment <= 0.7:
-        mood = "Cheery &#x1F60E;"
-        color = "#50e582"
+@app.route("/days", methods=["GET", "POST"])
+def day_chart():
+    active_page = {'Daily':'active','Weekly':'','Monthly':'','Yearly':''}
+    if request.method == "POST":
+        dates, data = get_data("days", test, int(request.form["num"]))
+        return render_template('chart.html', table_name = "days",
+                                sentiment_data = data,
+                                dates = json.dumps(dates),
+                                color = color, active_page = active_page)
     else:
-        mood = "Ecstatic &#x1F60D;"
-        color = "#4ce659"
+        dates, data = get_data("days", test, 7)
+        return render_template('chart.html', table_name = "days",
+                                sentiment_data = data,
+                                dates = json.dumps(dates),
+                                color = color, active_page = active_page)
 
-    return mood, color
+
+@app.route("/weeks", methods=["GET", "POST"])
+def week_chart():
+    active_page = {'Daily':'','Weekly':'active','Monthly':'','Yearly':''}
+    if request.method == "POST":
+        dates, data = get_data("weeks", test, int(request.form["num"]))
+        return render_template('chart.html', table_name = "weeks",
+                                sentiment_data = data,
+                                dates = json.dumps(dates),
+                                color = color, active_page = active_page)
+    else:
+        dates, data = get_data("weeks", test, 4)
+        return render_template('chart.html', table_name = "weeks",
+                                sentiment_data = data,
+                                dates = json.dumps(dates),
+                                color = color, active_page = active_page)
+
+
+@app.route("/months", methods=["GET", "POST"])
+def month_chart():
+    active_page = {'Daily':'','Weekly':'','Monthly':'active','Yearly':''}
+    if request.method == "POST":
+        dates, data = get_data("months", test, int(request.form["num"]))
+        return render_template('chart.html', table_name = "months",
+                                sentiment_data = data,
+                                dates = json.dumps(dates),
+                                color = color, active_page = active_page)
+    else:
+        dates, data = get_data("months", test, 3)
+        return render_template('chart.html', table_name = "months",
+                                sentiment_data = data,
+                                dates = json.dumps(dates),
+                                color = color, active_page = active_page)
+
+
+@app.route("/years", methods=["GET", "POST"])
+def year_chart():
+    active_page = {'Daily':'','Weekly':'','Monthly':'','Yearly':'active'}
+    if request.method == "POST":
+        dates, data = get_data("years", test, int(request.form["num"]))
+        return render_template('chart.html', table_name = "years",
+                                sentiment_data = data,
+                                dates = json.dumps(dates),
+                                color = color, active_page = active_page)
+    else:
+        dates, data = get_data("years", test, 2)
+        return render_template('chart.html', table_name = "years",
+                                sentiment_data = data,
+                                dates = json.dumps(dates),
+                                color = color, active_page = active_page)
+
+
+
+def get_data(table_name, d, num):
+    if table_name == "days": start = d - timedelta(days=num-1) 
+    if table_name == "weeks": start = d - timedelta(weeks=num-1) 
+    if table_name == "months": start = d - relativedelta(months=+num-1) 
+    if table_name == "years": start = d - relativedelta(years=+num-1) 
+    dates = []
+    data = []
+    while start <= d:
+        entry = days.get_entry(table_name, start)
+        dates.append(entry.date.strftime("%B %d, %Y"))
+        data.append(entry.sentiment)
+        if table_name == "days": start = start + timedelta(days=1)
+        if table_name == "weeks": start = start + timedelta(weeks=1) 
+        if table_name == "months": start = start + relativedelta(months=+1) 
+        if table_name == "years": start = start + relativedelta(years=+1) 
+    return dates, data
 
 
 def get_sentiments(comment):
     polarity = "{0:.2f}".format(TextBlob(comment).sentiment.polarity)
     subjectivity = "{0:.2f}".format(TextBlob(comment).sentiment.subjectivity)
     return "Polarity: {0} | Subjectivity: {1}".format(polarity, subjectivity)
-
-# only works for /chart/days so far
-@app.route("/chart/<table_name>")
-def chart(table_name):
-    mood, color = get_mood(day.sentiment)
-    dates, data = get_data(table_name, test)
-    return render_template('chart.html', table_name = table_name,
-                            sentiment_data = data,
-                            dates = json.dumps(dates),
-                            color = color)
-
-
-def get_data(table_name, d):
-    start = d - timedelta(days=7)
-    dates = []
-    data = []
-    while start <= d:
-        day = days.get_entry("days", start)
-        dates.append(day.date.strftime("%B %d, %Y"))
-        data.append(day.sentiment)
-        start = start + timedelta(days=1)
-    return dates, data
 
 
 app.jinja_env.globals.update(get_sentiments=get_sentiments)

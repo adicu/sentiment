@@ -1,57 +1,138 @@
 <!DOCTYPE html>
-<html>
-<style>
-body {
-    background-color: {{ color }};
-}
-</style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-<script type="text/javascript">
-$(function () {
-    $('#container').highcharts({
-        chart: {
-            type: 'spline'
-        },
-        title: {
-            text: 'Daily Sentiment'
-        },
-        subtitle: {
-            text: 'Analysis by TextBlob'
-        },
-        xAxis: {
-            categories: {{ dates|safe }}
-        },
-        yAxis: {
-            title: {
-                text: 'Sentiment'
-            },
-        },
-        tooltip: {
-            crosshairs: true
-        },
-        plotOptions: {
-            spline: {
-                marker: {
-                    radius: 4,
-                    lineColor: '#666666',
-                    lineWidth: 1
-                }
+<html lang="en">
+    <head>
+        <title>Sentiment over time</title>
+        <style>
+            body {
+                background-color: {{ color }};
+                font-family: 'Roboto', sans-serif;
+                font-size: 16px;
+                color: white;
             }
-        },
-        series: [{
-            name: 'Bwog',
-            marker: {
-                symbol: 'square'
-            },
-            data: {{ sentiment_data|safe }}
+            header {
+                background: {{ color }};
+                color: white;
+                text-align: center;
+            }
+            nav {
+                padding: 1.5rem 0;
+                transition: all 0.4s ease;
+                width: 100%;
+            }
+            .nav-button {
+                border: 2px solid white;
+                border-radius: 0.5rem;
+                color: white;
+                display: inline-block;
+                margin: 0 2rem;
+                padding: 1rem 2rem;
+                text-align: center;
+                transition: padding 0.4s ease;
+            }
+            .nav-button:hover {
+                background-color: white;
+                color: #ccc
+            }
+            #active {
+                background-color: white;
+                color: black;
+                font-weight: bold;
+            }
+            input[type=text] {
+                padding:5px; 
+                border:2px solid #ccc; 
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+            
+            }
+            button[type=submit] {
+                padding:5px 15px; 
+                background:#ccc; 
+                border:0 none;
+                cursor:pointer;
+                border:2px solid #ccc; 
+                -webkit-border-radius: 5px;
+                border-radius: 5px; 
+                color: white;
+            }
+        </style>
 
-        }]
-    });
-});
-</script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <script type="text/javascript">
+        $(function () {
+            Highcharts.setOptions({
+                chart: {
+                    style: {
+                        fontFamily: 'sans-serif'
+                    }
+                }
+            });
+            $('#container').highcharts({
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: 'Sentiment'
+                },
+                subtitle: {
+                    text: 'Analysis by TextBlob'
+                },
+                xAxis: {
+                    categories: {{ dates|safe }}
+                },
+                yAxis: {
+                    title: {
+                        text: 'Polarity'
+                    },
+                },
+                tooltip: {
+                    crosshairs: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Bwog',
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: {{ sentiment_data|safe }}
+
+                }],
+                credits: {
+                    enabled: false
+                },
+                exporting: { 
+                    enabled: false 
+                }
+            });
+        });
+        </script>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a href="/days"><div class="nav-button" id="{{ active_page['Daily'] }}">Daily</div></a>
+                <a href="/weeks"><div class="nav-button" id="{{ active_page['Weekly'] }}">Weekly</div></a>
+                <a href="/months"><div class="nav-button" id="{{ active_page['Monthly'] }}">Monthly</div></a>
+                <a href="/years"><div class="nav-button" id="{{ active_page['Yearly'] }}">Yearly</div></a>
+            </nav>
+            <form action="/{{ table_name }}" method="post">
+                <input type="text" placeholder="Show how many past {{ table_name }}" name="num" required/>
+                <button type="submit">Go!</button>
+                <br><br>
+            </form>
+        </header>
+        <div id="container" style="width: 90%; height: 450px; margin: 0 auto"></div>
+    </body>
+</html>

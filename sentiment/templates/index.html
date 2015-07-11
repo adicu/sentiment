@@ -6,10 +6,10 @@
   <h1>Bwog Is {{ mood|safe }}</h1>
   <div id="nav-phantom"></div>
   <nav>
-    <a href="/chart/days"><div class="nav-button">Daily</div></a>
-    <a href="#weekly"><div class="nav-button">Weekly</div></a>
-    <a href="#monthly"><div class="nav-button">Monthly</div></a>
-    <a href="#yearly"><div class="nav-button">Yearly</div></a>
+    <a href="/days"><div class="nav-button">Daily</div></a>
+    <a href="/weeks"><div class="nav-button">Weekly</div></a>
+    <a href="/months"><div class="nav-button">Monthly</div></a>
+    <a href="/years"><div class="nav-button">Yearly</div></a>
   </nav>
 </header>
 
@@ -74,21 +74,21 @@
         <h2>Monthly Sentiments</h2>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="{{ month.comment1_url }}">{{ month.comment1_title }}</a></h3>
+        <h3><a href="{{ month.comment1_url }}" class="article-link">{{ month.comment1_title }}</a></h3>
         <h4>{{ get_sentiments(month.comment1) }}</h4>
         <article>
           <p>{{ month.comment1 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="{{ month.comment2_url }}">{{ month.comment2_title }}</a></h3>
+        <h3><a href="{{ month.comment2_url }}" class="article-link">{{ month.comment2_title }}</a></h3>
         <h4>{{ get_sentiments(month.comment2) }}</h4>
         <article>
           <p>{{ month.comment2 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="{{ month.comment3_url }}">{{ month.comment3_title }}</a></h3>
+        <h3><a href="{{ month.comment3_url }}" class="article-link">{{ month.comment3_title }}</a></h3>
         <h4>{{ get_sentiments(month.comment3) }}</h4>
         <article>
           <p>{{ month.comment3 }}</p>
@@ -101,21 +101,21 @@
         <h2>Yearly Sentiments</h2>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="{{ year.comment1_url }}">{{ year.comment1_title }}</a></h3>
+        <h3><a href="{{ year.comment1_url }}" class="article-link">{{ year.comment1_title }}</a></h3>
         <h4>{{ get_sentiments(year.comment1) }}</h4>
         <article>
           <p>{{ year.comment1 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="{{ year.comment2_url }}">{{ year.comment2_title }}</a></h3>
+        <h3><a href="{{ year.comment2_url }}" class="article-link">{{ year.comment2_title }}</a></h3>
         <h4>{{ get_sentiments(year.comment2) }}</h4>
         <article>
           <p>{{ year.comment2 }}</p>
         </article>
       </div>
       <div class="unit one-of-three">
-        <h3><a href="/" class="{{ year.comment3_url }}">{{ year.comment3_title }}</a></h3>
+        <h3><a href="{{ year.comment3_url }}" class="article-link">{{ year.comment3_title }}</a></h3>
         <h4>{{ get_sentiments(year.comment3) }}</h4>
         <article>
           <p>{{ year.comment3 }}</p>
