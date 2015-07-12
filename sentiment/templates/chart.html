@@ -65,6 +65,78 @@
 
         <script type="text/javascript">
         $(function () {
+        
+            var plot = {{ sentiment_data|safe }};
+            var sorted = plot.concat().sort();
+
+            for (i = 0; i < plot.length; i++) {
+                if (plot[i] == sorted[0] || plot[i] == sorted[plot.length - 1]) {
+                    plot[i] = addEmoji(plot[i]);
+                }
+            }
+            
+            function addEmoji(sentiment) {
+                if (sentiment <= -0.7) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f621.png)'
+                        }
+                    };
+                } else if (sentiment > -0.7 && sentiment <= -0.4) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f625.png)'
+                        }
+                    };
+                } else if (sentiment > -0.4 && sentiment <= -0.1) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f615.png)'
+                        }
+                    };
+                } else if (sentiment == 0.0) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f634.png)'
+                        }
+                    };
+                } else if (sentiment > -0.1 && sentiment <= 0.1) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f610.png)'
+                        }
+                    };
+                } else if (sentiment > 0.1 && sentiment <= 0.4) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f600.png)'
+                        }
+                    };
+                } else if (sentiment > 0.4 && sentiment <= 0.7) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f60e.png)'
+                        }
+                    };
+                } else {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f60d.png)'
+                        }
+                    };
+                }
+                return emoji;
+            }
+            
+
             Highcharts.setOptions({
                 chart: {
                     style: {
@@ -73,68 +145,6 @@
                 }
             });
 
-            var i;
-            var plot = {{ sentiment_data|safe }}
-            
-            for (i = 0; i < plot.length; i++) {
-                if (plot[i] <= -0.7) {
-                    plot[i] = {
-                        y: plot[i],
-                        marker: {
-                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f621.png)'
-                        }
-                    };
-                } else if (plot[i] > -0.7 && plot[i] <= -0.4) {
-                    plot[i] = {
-                        y: plot[i],
-                        marker: {
-                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f625.png)'
-                        }
-                    };
-                } else if (plot[i] > -0.4 && plot[i] <= -0.1) {
-                    plot[i] = {
-                        y: plot[i],
-                        marker: {
-                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f615.png)'
-                        }
-                    };
-                } else if (plot[i] == 0.0) {
-                    plot[i] = {
-                        y: plot[i],
-                        marker: {
-                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f634.png)'
-                        }
-                    };
-                } else if (plot[i] > -0.1 && plot[i] <= 0.1) {
-                    plot[i] = {
-                        y: plot[i],
-                        marker: {
-                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f610.png)'
-                        }
-                    };
-                } else if (plot[i] > 0.1 && plot[i] <= 0.4) {
-                    plot[i] = {
-                        y: plot[i],
-                        marker: {
-                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f600.png)'
-                        }
-                    };
-                } else if (plot[i] > 0.4 && plot[i] <= 0.7) {
-                    plot[i] = {
-                        y: plot[i],
-                        marker: {
-                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f60e.png)'
-                        }
-                    };
-                } else {
-                    plot[i] = {
-                        y: plot[i],
-                        marker: {
-                            symbol: 'url(https://twemoji.maxcdn.com/72x72/1f60d.png)'
-                        }
-                    };
-                }
-            }
 
             $('#container').highcharts({
                 chart: {
