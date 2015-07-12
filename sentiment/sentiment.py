@@ -53,10 +53,8 @@ def day_chart():
     
     if request.method == "POST":
         if request.form["num"] == '':
-            start = request.form["start"].split('-')
-            start = date(int(start[2]), int(start[0]), int(start[1]))
-            end = request.form["end"].split('-')
-            end = date(int(end[2]), int(end[0]), int(end[1]))
+            start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
+            end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
             dates, data = get_data("days", end, '', start)
         else: 
             dates, data = get_data("days", test, int(request.form["num"]))
@@ -79,10 +77,8 @@ def week_chart():
     
     if request.method == "POST":
         if request.form["num"] == '':
-            start = request.form["start"].split('-')
-            start = date(int(start[2]), int(start[0]), int(start[1]))
-            end = request.form["end"].split('-')
-            end = date(int(end[2]), int(end[0]), int(end[1]))
+            start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
+            end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
             dates, data = get_data("weeks", end, '', start)
         else: 
             dates, data = get_data("weeks", test, int(request.form["num"]))
@@ -105,10 +101,8 @@ def month_chart():
     
     if request.method == "POST":
         if request.form["num"] == '':
-            start = request.form["start"].split('-')
-            start = date(int(start[2]), int(start[0]), int(start[1]))
-            end = request.form["end"].split('-')
-            end = date(int(end[2]), int(end[0]), int(end[1]))
+            start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
+            end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
             dates, data = get_data("months", end, '', start)
         else: 
             dates, data = get_data("months", test, int(request.form["num"]))
@@ -131,10 +125,8 @@ def year_chart():
     
     if request.method == "POST":
         if request.form["num"] == '':
-            start = request.form["start"].split('-')
-            start = date(int(start[2]), int(start[0]), int(start[1]))
-            end = request.form["end"].split('-')
-            end = date(int(end[2]), int(end[0]), int(end[1]))
+            start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
+            end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
             dates, data = get_data("years", end, '', start)
         else: 
             dates, data = get_data("years", test, int(request.form["num"]))
