@@ -248,7 +248,7 @@ def main():
     """
     #display_table("days")
     #display_table("weeks")
-    #display_table("months")
+    display_table("months")
     #display_table("years")
 
 if __name__ == "__main__":
