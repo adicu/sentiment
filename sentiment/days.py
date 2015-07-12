@@ -47,7 +47,7 @@ def add_entry(table_name, date):
     """
     Adds an entry for the specified day/week/month/year.
     Includes date, comments, article urls, and article titles.
-    :param: date: the date to be added.
+    :param date: the date to be added.
     :return: None
     """
     db = create_engine("sqlite:///db/app.db", echo=False)
@@ -174,7 +174,6 @@ def display_entry(selection):
 def update_tables():
     """
     Updates all tables each day.
-    :param date: today's date
     :return: None
     """
     date = d.today()

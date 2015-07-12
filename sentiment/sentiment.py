@@ -145,6 +145,12 @@ def year_chart():
 
 
 def get_data(table_name, end, num, start=None):
+    """
+    Gets data for the past number of
+    days/weeks/months/years from today,
+    or for the specified date range.
+    :return: dates, data lists
+    """
     if start == None:
         if table_name == "days": start = end - timedelta(days=num-1) 
         if table_name == "weeks": start = end - timedelta(weeks=num-1) 
@@ -152,16 +158,27 @@ def get_data(table_name, end, num, start=None):
         if table_name == "years": start = end - relativedelta(years=+num-1) 
     else: 
         start = days.get_entry(table_name, start).date
+    
     dates = []
     data = []
+    
     while start <= end:
         entry = days.get_entry(table_name, start)
-        dates.append(entry.date.strftime("%B %d, %Y"))
         data.append(entry.sentiment)
-        if table_name == "days": start = start + timedelta(days=1)
-        if table_name == "weeks": start = start + timedelta(weeks=1) 
-        if table_name == "months": start = start + relativedelta(months=+1) 
-        if table_name == "years": start = start + relativedelta(years=+1) 
+        
+        if table_name == "days": 
+            dates.append(entry.date.strftime("%B %d, %Y"))
+            start = start + timedelta(days=1)
+        if table_name == "weeks": 
+            dates.append(entry.date.strftime("%B %d, %Y"))
+            start = start + timedelta(weeks=1) 
+        if table_name == "months": 
+            dates.append(entry.date.strftime("%B %Y"))
+            start = start + relativedelta(months=+1) 
+        if table_name == "years": 
+            dates.append(entry.date.strftime("%Y"))
+            start = start + relativedelta(years=+1) 
+
     return dates, data
 
 
