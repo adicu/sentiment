@@ -61,9 +61,82 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="http://code.highcharts.com/modules/exporting.js"></script>
+        <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
 
         <script type="text/javascript">
         $(function () {
+        
+            var plot = {{ sentiment_data|safe }};
+            var sorted = plot.concat().sort();
+
+            for (i = 0; i < plot.length; i++) {
+                if (plot[i] == sorted[0] || plot[i] == sorted[plot.length - 1]) {
+                    plot[i] = addEmoji(plot[i]);
+                }
+            }
+            
+            function addEmoji(sentiment) {
+                if (sentiment <= -0.7) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0766.png)'
+                        }
+                    };
+                } else if (sentiment > -0.7 && sentiment <= -0.4) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0770.png)'
+                        }
+                    };
+                } else if (sentiment > -0.4 && sentiment <= -0.1) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0876.png)'
+                        }
+                    };
+                } else if (sentiment == 0.0) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0886.png)'
+                        }
+                    };
+                } else if (sentiment > -0.1 && sentiment <= 0.1) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0755.png)'
+                        }
+                    };
+                } else if (sentiment > 0.1 && sentiment <= 0.4) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0874.png)'
+                        }
+                    };
+                } else if (sentiment > 0.4 && sentiment <= 0.7) {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0753.png)'
+                        }
+                    };
+                } else {
+                    emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0752.png)'
+                        }
+                    };
+                }
+                return emoji;
+            }
+            
+
             Highcharts.setOptions({
                 chart: {
                     style: {
@@ -71,6 +144,8 @@
                     }
                 }
             });
+
+
             $('#container').highcharts({
                 chart: {
                     type: 'spline'
@@ -106,7 +181,7 @@
                     marker: {
                         symbol: 'square'
                     },
-                    data: {{ sentiment_data|safe }}
+                    data: plot
 
                 }],
                 credits: {
