@@ -50,12 +50,19 @@ active_page = {'Daily':'','Weekly':'','Monthly':'','Yearly':''}
 @app.route("/days", methods=["GET", "POST"])
 def day_chart():
     active_page = {'Daily':'active','Weekly':'','Monthly':'','Yearly':''}
+    
     if request.method == "POST":
-        dates, data = get_data("days", test, int(request.form["num"]))
+        if request.form["num"] == '':
+            start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
+            end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
+            dates, data = get_data("days", end, '', start)
+        else: 
+            dates, data = get_data("days", test, int(request.form["num"]))
         return render_template('chart.html', table_name = "days",
                                 sentiment_data = data,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
+    
     else:
         dates, data = get_data("days", test, 7)
         return render_template('chart.html', table_name = "days",
@@ -67,12 +74,19 @@ def day_chart():
 @app.route("/weeks", methods=["GET", "POST"])
 def week_chart():
     active_page = {'Daily':'','Weekly':'active','Monthly':'','Yearly':''}
+    
     if request.method == "POST":
-        dates, data = get_data("weeks", test, int(request.form["num"]))
+        if request.form["num"] == '':
+            start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
+            end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
+            dates, data = get_data("weeks", end, '', start)
+        else: 
+            dates, data = get_data("weeks", test, int(request.form["num"]))
         return render_template('chart.html', table_name = "weeks",
                                 sentiment_data = data,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
+    
     else:
         dates, data = get_data("weeks", test, 4)
         return render_template('chart.html', table_name = "weeks",
@@ -84,12 +98,19 @@ def week_chart():
 @app.route("/months", methods=["GET", "POST"])
 def month_chart():
     active_page = {'Daily':'','Weekly':'','Monthly':'active','Yearly':''}
+    
     if request.method == "POST":
-        dates, data = get_data("months", test, int(request.form["num"]))
+        if request.form["num"] == '':
+            start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
+            end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
+            dates, data = get_data("months", end, '', start)
+        else: 
+            dates, data = get_data("months", test, int(request.form["num"]))
         return render_template('chart.html', table_name = "months",
                                 sentiment_data = data,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
+    
     else:
         dates, data = get_data("months", test, 3)
         return render_template('chart.html', table_name = "months",
@@ -101,12 +122,19 @@ def month_chart():
 @app.route("/years", methods=["GET", "POST"])
 def year_chart():
     active_page = {'Daily':'','Weekly':'','Monthly':'','Yearly':'active'}
+    
     if request.method == "POST":
-        dates, data = get_data("years", test, int(request.form["num"]))
+        if request.form["num"] == '':
+            start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
+            end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
+            dates, data = get_data("years", end, '', start)
+        else: 
+            dates, data = get_data("years", test, int(request.form["num"]))
         return render_template('chart.html', table_name = "years",
                                 sentiment_data = data,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
+    
     else:
         dates, data = get_data("years", test, 2)
         return render_template('chart.html', table_name = "years",
@@ -116,21 +144,41 @@ def year_chart():
 
 
 
-def get_data(table_name, d, num):
-    if table_name == "days": start = d - timedelta(days=num-1) 
-    if table_name == "weeks": start = d - timedelta(weeks=num-1) 
-    if table_name == "months": start = d - relativedelta(months=+num-1) 
-    if table_name == "years": start = d - relativedelta(years=+num-1) 
+def get_data(table_name, end, num, start=None):
+    """
+    Gets data for the past number of
+    days/weeks/months/years from today,
+    or for the specified date range.
+    :return: dates, data lists
+    """
+    if start == None:
+        if table_name == "days": start = end - timedelta(days=num-1) 
+        if table_name == "weeks": start = end - timedelta(weeks=num-1) 
+        if table_name == "months": start = end - relativedelta(months=+num-1) 
+        if table_name == "years": start = end - relativedelta(years=+num-1) 
+    else: 
+        start = days.get_entry(table_name, start).date
+    
     dates = []
     data = []
-    while start <= d:
+    
+    while start <= end:
         entry = days.get_entry(table_name, start)
-        dates.append(entry.date.strftime("%B %d, %Y"))
         data.append(entry.sentiment)
-        if table_name == "days": start = start + timedelta(days=1)
-        if table_name == "weeks": start = start + timedelta(weeks=1) 
-        if table_name == "months": start = start + relativedelta(months=+1) 
-        if table_name == "years": start = start + relativedelta(years=+1) 
+        
+        if table_name == "days": 
+            dates.append(entry.date.strftime("%B %d, %Y"))
+            start = start + timedelta(days=1)
+        if table_name == "weeks": 
+            dates.append(entry.date.strftime("%B %d, %Y"))
+            start = start + timedelta(weeks=1) 
+        if table_name == "months": 
+            dates.append(entry.date.strftime("%B %Y"))
+            start = start + relativedelta(months=+1) 
+        if table_name == "years": 
+            dates.append(entry.date.strftime("%Y"))
+            start = start + relativedelta(years=+1) 
+
     return dates, data
 
 
