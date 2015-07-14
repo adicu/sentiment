@@ -44,7 +44,9 @@
                 border:2px solid #ccc; 
                 -webkit-border-radius: 5px;
                 border-radius: 5px;
-            
+            }
+            .date-range {
+                width: 130px;
             }
             button[type=submit] {
                 padding:5px 15px; 
@@ -205,8 +207,8 @@
             <form action="/{{ table_name }}" method="post">
                 <input type="text" placeholder="Show how many past {{ table_name }}" name="num"/>
                 <button type="submit">Go!</button>
-                OR <input type="text" placeholder="Start date (mm/dd/yy)" name="start"/>
-                <input type="text" placeholder="End date (mm/dd/yy)" name="end"/>
+                OR <input type="text" class="date-range" placeholder="Start date (mm/dd/yy)" name="start"/>
+                <input type="text" class="date-range" placeholder="End date (mm/dd/yy)" name="end"/>
                 <button type="submit">Go!</button>
                 <br><br>
             </form>
