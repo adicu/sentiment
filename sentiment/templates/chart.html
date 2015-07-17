@@ -161,11 +161,16 @@
                 xAxis: {
                     categories: {{ dates|safe }}
                 },
-                yAxis: {
+                yAxis: [{
                     title: {
                         text: 'Polarity'
                     },
-                },
+                }, {
+                    title: {
+                        text: 'Temperature (°F)'
+                    },
+                    opposite: true
+                }],
                 tooltip: {
                     crosshairs: true
                 },
@@ -184,6 +189,13 @@
                         symbol: 'square'
                     },
                     data: plot
+                }, {
+                    name: 'High Temperature',
+                    yAxis: 1,
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: {{ weather_data|safe }}
 
                 }],
                 credits: {
