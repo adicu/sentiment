@@ -9,6 +9,8 @@
                 font-family: 'Roboto', sans-serif;
                 font-size: 16px;
                 color: white;
+                text-align: center;
+
             }
             header {
                 background: {{ color }};
@@ -44,9 +46,11 @@
                 border:2px solid #ccc; 
                 -webkit-border-radius: 5px;
                 border-radius: 5px;
-            
             }
-            button[type=submit] {
+            .date-range {
+                width: 130px;
+            }
+            button {
                 padding:5px 15px; 
                 background:#ccc; 
                 border:0 none;
@@ -159,11 +163,16 @@
                 xAxis: {
                     categories: {{ dates|safe }}
                 },
-                yAxis: {
+                yAxis: [{
                     title: {
                         text: 'Polarity'
                     },
-                },
+                }, {
+                    title: {
+                        text: 'Temperature (°F)'
+                    },
+                    opposite: true
+                }],
                 tooltip: {
                     crosshairs: true
                 },
@@ -182,6 +191,13 @@
                         symbol: 'square'
                     },
                     data: plot
+                }, {
+                    name: 'High Temperature',
+                    yAxis: 1,
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: {{ weather_data|safe }}
 
                 }],
                 credits: {
@@ -189,6 +205,20 @@
                 },
                 exporting: { 
                     enabled: false 
+                }
+            });
+            
+            var chart = $('#container').highcharts();
+            var $button = $('#button');
+            
+            $button.click(function () {
+                var series = chart.series[1];
+                if (series.visible) {
+                    series.hide();
+                    $button.html('Show temperature');
+                } else {
+                    series.show();
+                    $button.html('Hide temperature');
                 }
             });
         });
@@ -205,12 +235,13 @@
             <form action="/{{ table_name }}" method="post">
                 <input type="text" placeholder="Show how many past {{ table_name }}" name="num"/>
                 <button type="submit">Go!</button>
-                OR <input type="text" placeholder="Start date (mm/dd/yy)" name="start"/>
-                <input type="text" placeholder="End date (mm/dd/yy)" name="end"/>
+                OR <input type="text" class="date-range" placeholder="Start date (mm/dd/yy)" name="start"/>
+                <input type="text" class="date-range" placeholder="End date (mm/dd/yy)" name="end"/>
                 <button type="submit">Go!</button>
                 <br><br>
             </form>
         </header>
         <div id="container" style="width: 90%; height: 450px; margin: 0 auto"></div>
+        <br><button id="button">Hide temperature</button>
     </body>
 </html>

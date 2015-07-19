@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from scraper import scraper
 from textblob import TextBlob
+import cPickle as pickle
 import json
 
 import days
@@ -46,6 +47,7 @@ because each will be compared with different trends
 (e.g. temperature, library wifi usage, twitter sentiment)
 """
 active_page = {'Daily':'','Weekly':'','Monthly':'','Yearly':''}
+weather_dict = pickle.load(open('weather.p', 'rb'))
 
 @app.route("/days", methods=["GET", "POST"])
 def day_chart():
@@ -55,18 +57,18 @@ def day_chart():
         if request.form["num"] == '':
             start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
             end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
-            dates, data = get_data("days", end, '', start)
+            dates, data, weather = get_data("days", end, '', start)
         else: 
-            dates, data = get_data("days", test, int(request.form["num"]))
+            dates, data, weather = get_data("days", test, int(request.form["num"]))
         return render_template('chart.html', table_name = "days",
-                                sentiment_data = data,
+                                sentiment_data = data, weather_data = weather,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
     
     else:
-        dates, data = get_data("days", test, 7)
+        dates, data, weather = get_data("days", test, 7)
         return render_template('chart.html', table_name = "days",
-                                sentiment_data = data,
+                                sentiment_data = data, weather_data = weather,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
 
@@ -79,18 +81,18 @@ def week_chart():
         if request.form["num"] == '':
             start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
             end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
-            dates, data = get_data("weeks", end, '', start)
+            dates, data, weather = get_data("weeks", end, '', start)
         else: 
-            dates, data = get_data("weeks", test, int(request.form["num"]))
+            dates, data, weather = get_data("weeks", test, int(request.form["num"]))
         return render_template('chart.html', table_name = "weeks",
-                                sentiment_data = data,
+                                sentiment_data = data, weather_data = weather,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
     
     else:
-        dates, data = get_data("weeks", test, 4)
+        dates, data, weather = get_data("weeks", test, 4)
         return render_template('chart.html', table_name = "weeks",
-                                sentiment_data = data,
+                                sentiment_data = data, weather_data = weather,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
 
@@ -103,18 +105,18 @@ def month_chart():
         if request.form["num"] == '':
             start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
             end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
-            dates, data = get_data("months", end, '', start)
+            dates, data, weather = get_data("months", end, '', start)
         else: 
-            dates, data = get_data("months", test, int(request.form["num"]))
+            dates, data, weather = get_data("months", test, int(request.form["num"]))
         return render_template('chart.html', table_name = "months",
-                                sentiment_data = data,
+                                sentiment_data = data, weather_data = weather,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
     
     else:
-        dates, data = get_data("months", test, 3)
+        dates, data, weather = get_data("months", test, 3)
         return render_template('chart.html', table_name = "months",
-                                sentiment_data = data,
+                                sentiment_data = data, weather_data = weather,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
 
@@ -127,18 +129,18 @@ def year_chart():
         if request.form["num"] == '':
             start = datetime.strptime(request.form["start"], "%m/%d/%y").date()
             end = datetime.strptime(request.form["end"], "%m/%d/%y").date()
-            dates, data = get_data("years", end, '', start)
+            dates, data, weather = get_data("years", end, '', start)
         else: 
-            dates, data = get_data("years", test, int(request.form["num"]))
+            dates, data, weather = get_data("years", test, int(request.form["num"]))
         return render_template('chart.html', table_name = "years",
-                                sentiment_data = data,
+                                sentiment_data = data, weather_data = weather,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
     
     else:
-        dates, data = get_data("years", test, 2)
+        dates, data, weather = get_data("years", test, 2)
         return render_template('chart.html', table_name = "years",
-                                sentiment_data = data,
+                                sentiment_data = data, weather_data = weather,
                                 dates = json.dumps(dates),
                                 color = color, active_page = active_page)
 
@@ -149,7 +151,7 @@ def get_data(table_name, end, num, start=None):
     Gets data for the past number of
     days/weeks/months/years from today,
     or for the specified date range.
-    :return: dates, data lists
+    :return: dates, data, weather lists
     """
     if start == None:
         if table_name == "days": start = end - timedelta(days=num-1) 
@@ -161,6 +163,7 @@ def get_data(table_name, end, num, start=None):
     
     dates = []
     data = []
+    weather = []
     
     while start <= end:
         entry = days.get_entry(table_name, start)
@@ -179,7 +182,12 @@ def get_data(table_name, end, num, start=None):
             dates.append(entry.date.strftime("%Y"))
             start = start + relativedelta(years=+1) 
 
-    return dates, data
+        # 7/15/15 is the last entry in the current weather dictionary
+        num_days = (min(start, date(2015,7,15)) - entry.date).days
+        d = {entry.date + timedelta(days=i): weather_dict[entry.date + timedelta(days=i)] for i in range(num_days)}
+        weather.append(float(sum(d.values()))/float(len(d)))
+
+    return dates, data, weather
 
 
 def get_sentiments(comment):
