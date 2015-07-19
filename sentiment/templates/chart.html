@@ -9,6 +9,8 @@
                 font-family: 'Roboto', sans-serif;
                 font-size: 16px;
                 color: white;
+                text-align: center;
+
             }
             header {
                 background: {{ color }};
@@ -48,7 +50,7 @@
             .date-range {
                 width: 130px;
             }
-            button[type=submit] {
+            button {
                 padding:5px 15px; 
                 background:#ccc; 
                 border:0 none;
@@ -205,6 +207,20 @@
                     enabled: false 
                 }
             });
+            
+            var chart = $('#container').highcharts();
+            var $button = $('#button');
+            
+            $button.click(function () {
+                var series = chart.series[1];
+                if (series.visible) {
+                    series.hide();
+                    $button.html('Show temperature');
+                } else {
+                    series.show();
+                    $button.html('Hide temperature');
+                }
+            });
         });
         </script>
     </head>
@@ -226,5 +242,6 @@
             </form>
         </header>
         <div id="container" style="width: 90%; height: 450px; margin: 0 auto"></div>
+        <br><button id="button">Hide temperature</button>
     </body>
 </html>

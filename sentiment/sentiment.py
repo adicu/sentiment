@@ -182,7 +182,8 @@ def get_data(table_name, end, num, start=None):
             dates.append(entry.date.strftime("%Y"))
             start = start + relativedelta(years=+1) 
 
-        num_days = (min(start, date.today() - timedelta(days=1)) - entry.date).days
+        # 7/15/15 is the last entry in the current weather dictionary
+        num_days = (min(start, date(2015,7,15)) - entry.date).days
         d = {entry.date + timedelta(days=i): weather_dict[entry.date + timedelta(days=i)] for i in range(num_days)}
         weather.append(float(sum(d.values()))/float(len(d)))
 
