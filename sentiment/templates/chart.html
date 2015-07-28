@@ -93,6 +93,28 @@
                     plot[i] = addEmoji(plot[i]);
                 }
             }
+
+            var density = {{ density_data|safe }};
+            var sorted = density.concat().sort();
+
+            for (i = 0; i < density.length; i++) {
+                if (density[i] == sorted[0]) {
+                    density[i] = {
+                        y: density[i],
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0329.png)'
+                        }
+                    };
+                }
+                if (density[i] == sorted[density.length - 1]) {
+                    density[i] = {
+                        y: density[i],
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0618.png)'
+                        }
+                    };
+                }
+            }
             
             function addEmoji(sentiment) {
                 if (sentiment <= -0.7) {
@@ -225,7 +247,7 @@
                     marker: {
                         symbol: 'square'
                     },
-                    data: {{ density_data|safe }}
+                    data: density
 
                 }],
                 credits: {
