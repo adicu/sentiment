@@ -169,7 +169,12 @@
                     },
                 }, {
                     title: {
-                        text: 'Temperature (°F)'
+                        text: null
+                    },
+                    opposite: true
+                }, {
+                    title: {
+                        text: null
                     },
                     opposite: true
                 }],
@@ -199,6 +204,14 @@
                     },
                     data: {{ weather_data|safe }}
 
+                }, {
+                    name: 'Butler Density',
+                    yAxis: 2,
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: {{ density_data|safe }}
+
                 }],
                 credits: {
                     enabled: false
@@ -209,16 +222,66 @@
             });
             
             var chart = $('#container').highcharts();
-            var $button = $('#button');
+            chart.series[1].hide()
+            chart.series[2].hide()
+
+            var $button1 = $('#button1');
             
-            $button.click(function () {
+            $button1.click(function () {
                 var series = chart.series[1];
                 if (series.visible) {
                     series.hide();
-                    $button.html('Show temperature');
+                    $button1.html('Show temperature');
+                    chart.yAxis[1].update({
+                        labels: {
+                            enabled: false
+                        },
+                        title: {
+                            text: null
+                        }
+                    });
                 } else {
                     series.show();
-                    $button.html('Hide temperature');
+                    $button1.html('Hide temperature');
+                    chart.yAxis[1].update({
+                        labels: {
+                            enabled: true
+                        },
+                        title: {
+                            text: 'Temperature (°F)'
+                        },
+                        opposite: true
+                    });
+                }
+            });
+
+            var $button2 = $('#button2');
+            
+            $button2.click(function () {
+                var series = chart.series[2];
+                if (series.visible) {
+                    series.hide();
+                    $button2.html('Show density');
+                    chart.yAxis[2].update({
+                        labels: {
+                            enabled: false
+                        },
+                        title: {
+                            text: null
+                        }
+                    });
+                } else {
+                    series.show();
+                    $button2.html('Hide density');
+                    chart.yAxis[2].update({
+                        labels: {
+                            enabled: true
+                        },
+                        title: {
+                            text: 'Density (%)'
+                        },
+                        opposite: true
+                    });
                 }
             });
         });
@@ -242,6 +305,7 @@
             </form>
         </header>
         <div id="container" style="width: 90%; height: 450px; margin: 0 auto"></div>
-        <br><button id="button">Hide temperature</button>
+        <br><button id="button1">Show temperature</button>
+        <button id="button2">Show density</button>
     </body>
 </html>

@@ -6,3 +6,4 @@
 flask
 config.py
 .vagrant/
+density.p
