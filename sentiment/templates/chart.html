@@ -60,6 +60,21 @@
                 border-radius: 5px; 
                 color: white;
             }
+            .inactive {
+                background: none;
+                border: 2px solid white;
+                border-radius: 0.5rem;
+                color: white;
+                margin: 0 1rem;
+            }
+            .toggle {
+                background-color: white;
+                color: black;
+                font-weight: bold;
+                border: 2px solid white;
+                border-radius: 0.5rem;
+                margin: 0 1rem;
+            }
         </style>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -232,6 +247,7 @@
                 if (series.visible) {
                     series.hide();
                     $button1.html('Show temperature');
+                    document.getElementById("button1").className = "inactive";
                     chart.yAxis[1].update({
                         labels: {
                             enabled: false
@@ -243,6 +259,7 @@
                 } else {
                     series.show();
                     $button1.html('Hide temperature');
+                    document.getElementById("button1").className = "toggle";
                     chart.yAxis[1].update({
                         labels: {
                             enabled: true
@@ -262,6 +279,7 @@
                 if (series.visible) {
                     series.hide();
                     $button2.html('Show density');
+                    document.getElementById("button2").className = "inactive";
                     chart.yAxis[2].update({
                         labels: {
                             enabled: false
@@ -273,6 +291,7 @@
                 } else {
                     series.show();
                     $button2.html('Hide density');
+                    document.getElementById("button2").className = "toggle";
                     chart.yAxis[2].update({
                         labels: {
                             enabled: true
@@ -305,7 +324,7 @@
             </form>
         </header>
         <div id="container" style="width: 90%; height: 450px; margin: 0 auto"></div>
-        <br><button id="button1">Show temperature</button>
-        <button id="button2">Show density</button>
+        <br><button class="inactive" id="button1">Show temperature</button>
+        <button class="inactive" id="button2">Show density</button>
     </body>
 </html>
