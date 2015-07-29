@@ -184,13 +184,18 @@
 
             $('#container').highcharts({
                 chart: {
-                    type: 'spline'  
+                    type: 'spline',
+                    borderColor: '#ccc',
+                    borderRadius: 25,
+                    borderWidth: 4
                 },
                 title: {
-                    text: 'Sentiment Analysis'
+                    text: 'Sentiment Analysis',
+                    y: 23
                 },
                 subtitle: {
-                    text: 'TextBlob'
+                    text: 'TextBlob',
+                    y: 40
                 },
                 xAxis: {
                     categories: {{ dates|safe }}
