@@ -118,62 +118,28 @@
             
             function addEmoji(sentiment) {
                 if (sentiment <= -0.7) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0766.png)'
-                        }
-                    };
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0766.png)'
                 } else if (sentiment > -0.7 && sentiment <= -0.4) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0770.png)'
-                        }
-                    };
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0770.png)'
                 } else if (sentiment > -0.4 && sentiment <= -0.1) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0876.png)'
-                        }
-                    };
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0876.png)'
                 } else if (sentiment == 0.0) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0886.png)'
-                        }
-                    };
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0886.png)'
                 } else if (sentiment > -0.1 && sentiment <= 0.1) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0755.png)'
-                        }
-                    };
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0755.png)'
                 } else if (sentiment > 0.1 && sentiment <= 0.4) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0874.png)'
-                        }
-                    };
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0874.png)'
                 } else if (sentiment > 0.4 && sentiment <= 0.7) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0753.png)'
-                        }
-                    };
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0753.png)'
                 } else {
-                    emoji = {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0752.png)'
+                }
+                emoji = {
                         y: sentiment,
                         marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0752.png)'
+                            symbol: emoji_url
                         }
                     };
-                }
                 return emoji;
             }
             
