@@ -2,7 +2,7 @@
 
 <html lang="en">
     <head>
-        <title>Sentiment over time</title>
+        <title>Sentiment over {{ table_name }}</title>
         <style>
             body {
                 background-color: {{ color }};
@@ -94,6 +94,15 @@
                 }
             }
 
+            var temperature = {{ weather_data|safe }};
+            var sorted = temperature.concat().sort();
+
+            for (i = 0; i < temperature.length; i++) {
+                if (temperature[i] == sorted[0] || temperature[i] == sorted[temperature.length - 1]) {
+                    temperature[i] = addWeather(temperature[i]);
+                }
+            }
+
             var density = {{ density_data|safe }};
             var sorted = density.concat().sort();
 
@@ -140,6 +149,26 @@
                             symbol: emoji_url
                         }
                     };
+
+                return emoji;
+            }
+
+            // Emoji key is arbitrary; no info other than average high temperatures
+            function addWeather(temp) {
+                if (temp < 40) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0139.png)'
+                } else if (temp >= 40 && temp < 60) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0082.png)'
+                } else if (temp >= 60) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0081.png)'
+                }
+                emoji = {
+                        y: temp,
+                        marker: {
+                            symbol: emoji_url
+                        }
+                    };
+
                 return emoji;
             }
             
@@ -158,10 +187,10 @@
                     type: 'spline'  
                 },
                 title: {
-                    text: 'Sentiment'
+                    text: 'Sentiment Analysis'
                 },
                 subtitle: {
-                    text: 'Analysis by TextBlob'
+                    text: 'TextBlob'
                 },
                 xAxis: {
                     categories: {{ dates|safe }}
@@ -205,10 +234,10 @@
                     marker: {
                         symbol: 'square'
                     },
-                    data: {{ weather_data|safe }}
+                    data: temperature
 
                 }, {
-                    name: 'Butler Density',
+                    name: 'Butler 2 Density',
                     yAxis: 2,
                     marker: {
                         symbol: 'square'
@@ -311,7 +340,7 @@
                 <br><br>
             </form>
         </header>
-        <div id="container" style="width: 90%; height: 450px; margin: 0 auto"></div>
+        <div id="container" style="width: 60%; height: 450px; margin: 0 auto"></div>
         <br><button class="inactive" id="button1">Show temperature</button>
         <button class="inactive" id="button2">Show density</button>
     </body>
