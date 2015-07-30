@@ -2,8 +2,13 @@
 
 <html lang="en">
     <head>
-        <title>Sentiment over time</title>
+        <title>Sentiment over {{ table_name }}</title>
         <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
             body {
                 background-color: {{ color }};
                 font-family: 'Roboto', sans-serif;
@@ -17,24 +22,34 @@
                 color: white;
                 text-align: center;
             }
+            #nav-phantom {
+                height: 6.5rem;
+                width: 100%;
+                visibility: hidden;
+            }
             nav {
-                padding: 1.5rem 0;
+                padding: 1.25rem 0;
                 transition: all 0.4s ease;
                 width: 100%;
+                position: fixed;
+                top: 0;
+                background-color: rgba(255, 255, 255, 0.75);
+                z-index: 999;
             }
             .nav-button {
                 border: 2px solid white;
                 border-radius: 0.5rem;
-                color: white;
                 display: inline-block;
                 margin: 0 2rem;
-                padding: 1rem 2rem;
+                padding: 0.75rem 1.5rem;
                 text-align: center;
                 transition: padding 0.4s ease;
+                border-color: black;
+                color: black;
             }
             .nav-button:hover {
-                background-color: white;
-                color: #ccc
+                background-color: black;
+                color: white;
             }
             #active {
                 background-color: white;
@@ -60,6 +75,21 @@
                 border-radius: 5px; 
                 color: white;
             }
+            .inactive {
+                background: none;
+                border: 2px solid white;
+                border-radius: 0.5rem;
+                color: white;
+                margin: 0 1rem;
+            }
+            .toggle {
+                background-color: white;
+                color: black;
+                font-weight: bold;
+                border: 2px solid white;
+                border-radius: 0.5rem;
+                margin: 0 1rem;
+            }
         </style>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -78,65 +108,82 @@
                     plot[i] = addEmoji(plot[i]);
                 }
             }
-            
-            function addEmoji(sentiment) {
-                if (sentiment <= -0.7) {
-                    emoji = {
-                        y: sentiment,
+
+            var temperature = {{ weather_data|safe }};
+            var sorted = temperature.concat().sort();
+
+            for (i = 0; i < temperature.length; i++) {
+                if (temperature[i] == sorted[0] || temperature[i] == sorted[temperature.length - 1]) {
+                    temperature[i] = addWeather(temperature[i]);
+                }
+            }
+
+            var density = {{ density_data|safe }};
+            var sorted = density.concat().sort();
+
+            for (i = 0; i < density.length; i++) {
+                if (density[i] == sorted[0]) {
+                    density[i] = {
+                        y: density[i],
                         marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0766.png)'
-                        }
-                    };
-                } else if (sentiment > -0.7 && sentiment <= -0.4) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0770.png)'
-                        }
-                    };
-                } else if (sentiment > -0.4 && sentiment <= -0.1) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0876.png)'
-                        }
-                    };
-                } else if (sentiment == 0.0) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0886.png)'
-                        }
-                    };
-                } else if (sentiment > -0.1 && sentiment <= 0.1) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0755.png)'
-                        }
-                    };
-                } else if (sentiment > 0.1 && sentiment <= 0.4) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0874.png)'
-                        }
-                    };
-                } else if (sentiment > 0.4 && sentiment <= 0.7) {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0753.png)'
-                        }
-                    };
-                } else {
-                    emoji = {
-                        y: sentiment,
-                        marker: {
-                            symbol: 'url(http://pix.iemoji.com/twit33/0752.png)'
+                            symbol: 'url(http://pix.iemoji.com/twit33/0329.png)'
                         }
                     };
                 }
+                if (density[i] == sorted[density.length - 1]) {
+                    density[i] = {
+                        y: density[i],
+                        marker: {
+                            symbol: 'url(http://pix.iemoji.com/twit33/0618.png)'
+                        }
+                    };
+                }
+            }
+            
+            function addEmoji(sentiment) {
+                if (sentiment <= -0.7) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0766.png)'
+                } else if (sentiment > -0.7 && sentiment <= -0.4) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0770.png)'
+                } else if (sentiment > -0.4 && sentiment <= -0.1) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0876.png)'
+                } else if (sentiment == 0.0) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0886.png)'
+                } else if (sentiment > -0.1 && sentiment <= 0.1) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0755.png)'
+                } else if (sentiment > 0.1 && sentiment <= 0.4) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0874.png)'
+                } else if (sentiment > 0.4 && sentiment <= 0.7) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0753.png)'
+                } else {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0752.png)'
+                }
+                emoji = {
+                        y: sentiment,
+                        marker: {
+                            symbol: emoji_url
+                        }
+                    };
+
+                return emoji;
+            }
+
+            // Emoji key is arbitrary; no info other than average high temperatures
+            function addWeather(temp) {
+                if (temp < 40) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0139.png)'
+                } else if (temp >= 40 && temp < 60) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0082.png)'
+                } else if (temp >= 60) {
+                    emoji_url = 'url(http://pix.iemoji.com/twit33/0081.png)'
+                }
+                emoji = {
+                        y: temp,
+                        marker: {
+                            symbol: emoji_url
+                        }
+                    };
+
                 return emoji;
             }
             
@@ -152,13 +199,18 @@
 
             $('#container').highcharts({
                 chart: {
-                    type: 'spline'  
+                    type: 'spline',
+                    borderColor: '#ccc',
+                    borderRadius: 25,
+                    borderWidth: 4
                 },
                 title: {
-                    text: 'Sentiment'
+                    text: 'Sentiment Analysis',
+                    y: 23
                 },
                 subtitle: {
-                    text: 'Analysis by TextBlob'
+                    text: 'TextBlob',
+                    y: 40
                 },
                 xAxis: {
                     categories: {{ dates|safe }}
@@ -169,7 +221,12 @@
                     },
                 }, {
                     title: {
-                        text: 'Temperature (°F)'
+                        text: null
+                    },
+                    opposite: true
+                }, {
+                    title: {
+                        text: null
                     },
                     opposite: true
                 }],
@@ -197,7 +254,15 @@
                     marker: {
                         symbol: 'square'
                     },
-                    data: {{ weather_data|safe }}
+                    data: temperature
+
+                }, {
+                    name: 'Butler 2 Density',
+                    yAxis: 2,
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: density
 
                 }],
                 credits: {
@@ -209,16 +274,70 @@
             });
             
             var chart = $('#container').highcharts();
-            var $button = $('#button');
+            chart.series[1].hide()
+            chart.series[2].hide()
+
+            var $button1 = $('#button1');
             
-            $button.click(function () {
+            $button1.click(function () {
                 var series = chart.series[1];
                 if (series.visible) {
                     series.hide();
-                    $button.html('Show temperature');
+                    $button1.html('Show temperature');
+                    document.getElementById("button1").className = "inactive";
+                    chart.yAxis[1].update({
+                        labels: {
+                            enabled: false
+                        },
+                        title: {
+                            text: null
+                        }
+                    });
                 } else {
                     series.show();
-                    $button.html('Hide temperature');
+                    $button1.html('Hide temperature');
+                    document.getElementById("button1").className = "toggle";
+                    chart.yAxis[1].update({
+                        labels: {
+                            enabled: true
+                        },
+                        title: {
+                            text: 'Temperature (°F)'
+                        },
+                        opposite: true
+                    });
+                }
+            });
+
+            var $button2 = $('#button2');
+            
+            $button2.click(function () {
+                var series = chart.series[2];
+                if (series.visible) {
+                    series.hide();
+                    $button2.html('Show density');
+                    document.getElementById("button2").className = "inactive";
+                    chart.yAxis[2].update({
+                        labels: {
+                            enabled: false
+                        },
+                        title: {
+                            text: null
+                        }
+                    });
+                } else {
+                    series.show();
+                    $button2.html('Hide density');
+                    document.getElementById("button2").className = "toggle";
+                    chart.yAxis[2].update({
+                        labels: {
+                            enabled: true
+                        },
+                        title: {
+                            text: 'Density (%)'
+                        },
+                        opposite: true
+                    });
                 }
             });
         });
@@ -226,7 +345,9 @@
     </head>
     <body>
         <header>
+            <div id="nav-phantom"></div>
             <nav>
+                <a href="/"><div class="nav-button" id="home">&#x1f3e0</div></a>
                 <a href="/days"><div class="nav-button" id="{{ active_page['Daily'] }}">Daily</div></a>
                 <a href="/weeks"><div class="nav-button" id="{{ active_page['Weekly'] }}">Weekly</div></a>
                 <a href="/months"><div class="nav-button" id="{{ active_page['Monthly'] }}">Monthly</div></a>
@@ -241,7 +362,8 @@
                 <br><br>
             </form>
         </header>
-        <div id="container" style="width: 90%; height: 450px; margin: 0 auto"></div>
-        <br><button id="button">Hide temperature</button>
+        <div id="container" style="width: 65%; height: 450px; margin: 0 auto"></div>
+        <br><button class="inactive" id="button1">Show temperature</button>
+        <button class="inactive" id="button2">Show density</button>
     </body>
 </html>
