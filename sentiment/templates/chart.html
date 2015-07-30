@@ -4,6 +4,11 @@
     <head>
         <title>Sentiment over {{ table_name }}</title>
         <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
             body {
                 background-color: {{ color }};
                 font-family: 'Roboto', sans-serif;
@@ -17,24 +22,34 @@
                 color: white;
                 text-align: center;
             }
+            #nav-phantom {
+                height: 6.5rem;
+                width: 100%;
+                visibility: hidden;
+            }
             nav {
-                padding: 1.5rem 0;
+                padding: 1.25rem 0;
                 transition: all 0.4s ease;
                 width: 100%;
+                position: fixed;
+                top: 0;
+                background-color: rgba(255, 255, 255, 0.75);
+                z-index: 999;
             }
             .nav-button {
                 border: 2px solid white;
                 border-radius: 0.5rem;
-                color: white;
                 display: inline-block;
                 margin: 0 2rem;
-                padding: 1rem 2rem;
+                padding: 0.75rem 1.5rem;
                 text-align: center;
                 transition: padding 0.4s ease;
+                border-color: black;
+                color: black;
             }
             .nav-button:hover {
-                background-color: white;
-                color: #ccc
+                background-color: black;
+                color: white;
             }
             #active {
                 background-color: white;
@@ -330,7 +345,9 @@
     </head>
     <body>
         <header>
+            <div id="nav-phantom"></div>
             <nav>
+                <a href="/"><div class="nav-button" id="home">&#x1f3e0</div></a>
                 <a href="/days"><div class="nav-button" id="{{ active_page['Daily'] }}">Daily</div></a>
                 <a href="/weeks"><div class="nav-button" id="{{ active_page['Weekly'] }}">Weekly</div></a>
                 <a href="/months"><div class="nav-button" id="{{ active_page['Monthly'] }}">Monthly</div></a>
@@ -345,7 +362,7 @@
                 <br><br>
             </form>
         </header>
-        <div id="container" style="width: 60%; height: 450px; margin: 0 auto"></div>
+        <div id="container" style="width: 65%; height: 450px; margin: 0 auto"></div>
         <br><button class="inactive" id="button1">Show temperature</button>
         <button class="inactive" id="button2">Show density</button>
     </body>
